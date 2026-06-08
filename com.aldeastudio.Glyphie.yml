@@ -1,0 +1,58 @@
+app-id: com.aldeastudio.Glyphie
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+  - org.freedesktop.Sdk.Extension.llvm18
+command: glyphie
+
+finish-args:
+  # Wayland only (libcosmic)
+  - --socket=wayland
+  # GPU acceleration
+  - --device=dri
+  # For COSMIC settings/themes
+  - --filesystem=xdg-config/cosmic:ro
+
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm18/bin
+  env:
+    CARGO_HOME: /run/build/glyphie/cargo
+    RUSTFLAGS: "-L /usr/lib/sdk/llvm18/lib"
+
+modules:
+  - name: wl-clipboard
+    buildsystem: simple
+    build-commands:
+      - meson setup build --prefix=/app
+      - ninja -C build
+      - install -Dm755 build/src/wl-copy /app/bin/wl-copy
+      - install -Dm755 build/src/wl-paste /app/bin/wl-paste
+    sources:
+      - type: archive
+        url: https://github.com/bugaevc/wl-clipboard/archive/refs/tags/v2.2.1.tar.gz
+        sha256: 6eb8081207fb5581d1d82c4bcd9587205a31a3d47bea3ebeb7f41aa1143783eb
+
+  - name: glyphie
+    buildsystem: simple
+    build-commands:
+      - cargo --offline fetch --manifest-path Cargo.toml --verbose
+      - cargo --offline build --release --verbose
+      - install -Dm755 target/release/glyphie /app/bin/glyphie
+      - install -Dm644 com.aldeastudio.Glyphie.desktop /app/share/applications/com.aldeastudio.Glyphie.desktop
+      - install -Dm644 com.aldeastudio.Glyphie.metainfo.xml /app/share/metainfo/com.aldeastudio.Glyphie.metainfo.xml
+      - install -Dm644 icons/hicolor/scalable/apps/glyphie.svg /app/share/icons/hicolor/scalable/apps/com.aldeastudio.Glyphie.svg
+      - install -Dm644 icons/hicolor/128x128/apps/glyphie.png /app/share/icons/hicolor/128x128/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 icons/hicolor/256x256/apps/glyphie.png /app/share/icons/hicolor/256x256/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 icons/hicolor/64x64/apps/glyphie.png /app/share/icons/hicolor/64x64/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 icons/hicolor/48x48/apps/glyphie.png /app/share/icons/hicolor/48x48/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 icons/hicolor/32x32/apps/glyphie.png /app/share/icons/hicolor/32x32/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 icons/hicolor/16x16/apps/glyphie.png /app/share/icons/hicolor/16x16/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 README.md /app/share/doc/glyphie/README.md
+      - install -Dm644 LICENSE /app/share/doc/glyphie/LICENSE
+      - install -Dm644 THIRD_PARTY_NOTICES.md /app/share/doc/glyphie/THIRD_PARTY_NOTICES.md
+    sources:
+      - type: dir
+        path: .
+      - cargo-sources.json

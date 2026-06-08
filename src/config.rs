@@ -1,0 +1,100 @@
+use std::any::TypeId;
+use std::collections::VecDeque;
+
+use cosmic::cosmic_config::{self, cosmic_config_derive::CosmicConfigEntry, CosmicConfigEntry};
+use cosmic::iced::Subscription;
+use serde::{Deserialize, Serialize};
+
+use crate::emoji_data::{GenderFilter, SkinTone};
+use crate::APP_ID;
+
+pub(crate) const CONFIG_VERSION: u64 = 1;
+pub(crate) const MAX_RECENT_EMOJIS: usize = 30;
+
+// ── User Preferences ────────────────────────────────────────────
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, CosmicConfigEntry)]
+#[version = 1]
+pub struct GlyphieConfig {
+    pub skin_tone: SkinTone,
+    pub gender_filter: GenderFilter,
+    pub show_subcategories: bool,
+}
+
+impl Default for GlyphieConfig {
+    fn default() -> Self {
+        Self {
+            skin_tone: SkinTone::Default,
+            gender_filter: GenderFilter::default(),
+            show_subcategories: true,
+        }
+    }
+}
+
+impl GlyphieConfig {
+    pub fn load() -> (Option<cosmic_config::Config>, Self) {
+        match cosmic_config::Config::new(APP_ID, CONFIG_VERSION) {
+            Ok(config_handler) => {
+                let config = match Self::get_entry(&config_handler) {
+                    Ok(ok) => ok,
+                    Err((errs, config)) => {
+                        log::info!("errors loading config: {errs:?}");
+                        config
+                    }
+                };
+                (Some(config_handler), config)
+            }
+            Err(err) => {
+                log::error!("failed to create config handler: {err}");
+                (None, Self::default())
+            }
+        }
+    }
+
+    pub fn subscription() -> Subscription<cosmic_config::Update<Self>> {
+        struct ConfigSubscription;
+        cosmic_config::config_subscription(
+            TypeId::of::<ConfigSubscription>(),
+            APP_ID.into(),
+            CONFIG_VERSION,
+        )
+    }
+}
+
+// ── Runtime State ───────────────────────────────────────────────
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize, CosmicConfigEntry)]
+#[version = 1]
+pub struct GlyphieState {
+    pub recent_emojis: VecDeque<String>,
+}
+
+impl GlyphieState {
+    pub fn load() -> (Option<cosmic_config::Config>, Self) {
+        match cosmic_config::Config::new_state(APP_ID, CONFIG_VERSION) {
+            Ok(config_handler) => {
+                let config = match Self::get_entry(&config_handler) {
+                    Ok(ok) => ok,
+                    Err((errs, config)) => {
+                        log::info!("errors loading state: {errs:?}");
+                        config
+                    }
+                };
+                (Some(config_handler), config)
+            }
+            Err(err) => {
+                log::error!("failed to create state handler: {err}");
+                (None, Self::default())
+            }
+        }
+    }
+
+    pub fn subscription() -> Subscription<cosmic_config::Update<Self>> {
+        struct StateSubscription;
+        cosmic_config::config_state_subscription(
+            TypeId::of::<StateSubscription>(),
+            APP_ID.into(),
+            CONFIG_VERSION,
+        )
+    }
+}

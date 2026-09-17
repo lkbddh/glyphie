@@ -53,7 +53,7 @@ Instead, bind it in COSMIC:
 1. Open **Settings → Keyboard → Custom Shortcuts**
 2. **Name:** `Glyphie Emoji Picker`
 3. **Command:** `glyphie`
-4. **Shortcut:** `Super + .` (or any key you prefer)
+4. **Shortcut:** `Super + ;` (or any key you prefer; COSMIC uses `Super + .` for Zoom In by default)
 
 ## Installation
 
@@ -109,7 +109,7 @@ sudo just uninstall
 The quickest path is the prebuilt bundle attached to each [GitHub release](https://github.com/lkbddh/glyphie/releases/latest):
 
 ```bash
-flatpak install --user glyphie-0.2.1.flatpak
+flatpak install --user glyphie-0.3.0.flatpak
 flatpak run com.aldeastudio.Glyphie
 ```
 
@@ -175,7 +175,7 @@ flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/fl
 # 2. Download the bundle from the latest release (requires `gh` authenticated)
 gh release download --repo lkbddh/glyphie --pattern '*.flatpak' --dir /tmp --clobber
 # No gh? Use curl with the version-pinned asset name:
-# curl -fL -o /tmp/glyphie-0.2.1.flatpak https://github.com/lkbddh/glyphie/releases/latest/download/glyphie-0.2.1.flatpak
+# curl -fL -o /tmp/glyphie-0.3.0.flatpak https://github.com/lkbddh/glyphie/releases/latest/download/glyphie-0.3.0.flatpak
 
 # 3. Install for the current user (non-interactive)
 flatpak install --user --assumeyes /tmp/glyphie-*.flatpak
@@ -209,7 +209,7 @@ command -v glyphie
 
 ### Post-install: bind a global hotkey
 
-Glyphie ships no global hotkey. Bind it in COSMIC: **Settings → Keyboard → Custom Shortcuts** → Command `glyphie` (or `flatpak run com.aldeastudio.Glyphie` for the Flatpak), Shortcut `Super + .`.
+Glyphie ships no global hotkey. Bind it in COSMIC: **Settings → Keyboard → Custom Shortcuts** → Command `glyphie` (or `flatpak run com.aldeastudio.Glyphie` for the Flatpak), Shortcut `Super + ;` (COSMIC binds `Super + .` to Zoom In by default).
 
 ### Agent notes
 

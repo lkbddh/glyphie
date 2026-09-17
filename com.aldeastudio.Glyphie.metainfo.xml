@@ -30,6 +30,19 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.3.0" date="2026-09-16">
+      <description>
+        <p>Built on libcosmic 1.0</p>
+        <ul>
+          <li>Frosted glass: the picker follows COSMIC's translucent window setting</li>
+          <li>Secondary text and dividers use theme colors that stay readable on frosted windows</li>
+          <li>Ctrl+C copies on non-Latin keyboard layouts</li>
+          <li>Recent emojis history holds up to 36 emojis</li>
+          <li>Flatpak: preferences and recent emojis are now saved</li>
+          <li>Flatpak: Freedesktop 26.08 runtime and wl-clipboard 2.3.0</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.2.1" date="2026-06-06">
       <description>
         <p>Native COSMIC workflow polish</p>

@@ -1,0 +1,42 @@
+[package]
+name = "glyphie"
+version = "0.2.1"
+edition = "2021"
+rust-version = "1.93"
+description = "Glyphie - Emoji Picker with skin tone, multiselect and gender support"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/lkbddh/glyphie"
+
+[dependencies]
+libcosmic = { git = "https://github.com/pop-os/libcosmic", rev = "87ab8179e1bd9880239c340855ae8862034bd0e8", default-features = false, features = ["a11y", "single-instance", "tokio", "wayland", "winit"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+indexmap = "2.14"
+log = "0.4.34"
+env_logger = "0.11.11"
+i18n-embed = { version = "0.16", features = ["fluent-system", "desktop-requester"] }
+i18n-embed-fl = "0.10.1"
+rust-embed = "8.12"
+tokio = { version = "1.53", features = ["time"] }
+
+[features]
+default = ["wgpu"]
+wgpu = ["libcosmic/wgpu"]
+
+[[bin]]
+name = "glyphie"
+path = "src/main.rs"
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "s"
+strip = true
+panic = "abort"
+
+[profile.dev]
+opt-level = 0
+debug = false
+
+[profile.dev.package."*"]
+opt-level = 2

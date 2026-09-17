@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.aldeastudio.Glyphie</id>
+  <name>Glyphie</name>
+  <summary>Fast libcosmic-native emoji picker with skin tone and gender support</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p>
+      Glyphie is a fast, lightweight emoji picker. Select emojis with skin tone 
+      and gender preferences, search by name or keyword, and copy directly to 
+      your clipboard with a single click.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Multiselect mode - select multiple emojis and copy all at once</li>
+      <li>Search across all Unicode 16.0 emojis</li>
+      <li>Skin tone modifier support</li>
+      <li>Gender filter for people emojis</li>
+      <li>Recent emojis history</li>
+      <li>Keyboard navigation for highlighting and copying emojis</li>
+      <li>Single instance - launching again focuses the running picker</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">com.aldeastudio.Glyphie.desktop</launchable>
+  <url type="homepage">https://github.com/lkbddh/glyphie</url>
+  <url type="bugtracker">https://github.com/lkbddh/glyphie/issues</url>
+  <developer id="com.aldeastudio">
+    <name>Aldea Studio</name>
+  </developer>
+  <content_rating type="oars-1.1" />
+  <releases>
+    <release version="0.2.1" date="2026-06-06">
+      <description>
+        <p>Native COSMIC workflow polish</p>
+        <ul>
+          <li>Start on Recent for faster repeat picks</li>
+          <li>Keyboard-first copy and highlight navigation</li>
+          <li>Single-instance activation focuses the running picker</li>
+          <li>Wayland clipboard persistence after copy and close</li>
+          <li>Improved search ranking, recent matching, and emoji presentation</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.2.0" date="2026-01-05">
+      <description>
+        <p>Multiselect support</p>
+        <ul>
+          <li>Toggle multiselect mode to select multiple emojis</li>
+          <li>Selection tray shows selected emojis with remove buttons</li>
+          <li>Copy all selected emojis at once</li>
+          <li>Enter key copies selection, Escape clears it</li>
+          <li>Visual feedback when at 20 emoji selection limit</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.1.0" date="2025-12-31">
+      <description>
+        <p>Initial release</p>
+      </description>
+    </release>
+  </releases>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <keywords>
+    <keyword>emoji</keyword>
+    <keyword>emoticon</keyword>
+    <keyword>picker</keyword>
+    <keyword>unicode</keyword>
+    <keyword>clipboard</keyword>
+    <keyword>multiselect</keyword>
+  </keywords>
+  <requires>
+    <display_length compare="ge">300</display_length>
+  </requires>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+</component>

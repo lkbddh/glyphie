@@ -7,12 +7,6 @@
 Glyphie is a fast, lightweight, libcosmic-native emoji picker for COSMIC/Wayland.
 It's built for the "one emoji, right now" moment: open, search, click to copy, keep typing.
 
-## Why this exists (team project)
-
-Glyphie started as a team project after we quit Windows and moved to Pop!_OS as our daily driver. We missed `Win + .` for emojis, and the Linux options we tried didn't play well with the COSMIC desktop environment.
-
-Glyphie is our answer: a small, native COSMIC app that behaves like a picker (not a full chat client).
-
 ## What Glyphie is (and isn't)
 
 - A quick picker: minimal UI, predictable layout, closes after copy.

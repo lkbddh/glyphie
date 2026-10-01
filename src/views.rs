@@ -1,3 +1,4 @@
+use cosmic::iced::widget::scrollable::{Direction, Scrollbar};
 use cosmic::iced::{Alignment, Length};
 use cosmic::widget::{self, button, container, scrollable};
 use cosmic::Element;
@@ -308,9 +309,8 @@ impl CosmicEmojiPicker {
                 row = row.push(chip);
             }
 
-            cosmic::widget::scrollable::horizontal(row)
-                .scrollbar_width(0.0)
-                .scroller_width(0.0)
+            scrollable(row)
+                .direction(Direction::Horizontal(Scrollbar::hidden()))
                 .id(TRAY_SCROLLABLE_ID.clone())
                 .height(Length::Fixed(TRAY_SCROLLABLE_HEIGHT))
                 .into()

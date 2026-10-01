@@ -92,7 +92,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `bytes` | `1.12.1` | MIT | https://github.com/tokio-rs/bytes |
 | `calloop` | `0.14.4` | MIT | https://github.com/Smithay/calloop |
 | `calloop-wayland-source` | `0.4.1` | MIT | https://github.com/smithay/calloop-wayland-source |
-| `cc` | `1.4.6` | MIT OR Apache-2.0 | https://github.com/rust-lang/cc-rs |
+| `cc` | `1.5.1` | MIT OR Apache-2.0 | https://github.com/rust-lang/cc-rs |
 | `cfg-if` | `1.0.5` | MIT OR Apache-2.0 | https://github.com/rust-lang/cfg-if |
 | `cfg_aliases` | `0.2.2` | MIT | https://github.com/katharostech/cfg_aliases |
 | `clipboard-win` | `5.4.1` | BSL-1.0 | https://github.com/DoumanAsh/clipboard-win |
@@ -116,13 +116,13 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `core-graphics-types` | `0.2.0` | MIT OR Apache-2.0 | https://github.com/servo/core-foundation-rs |
 | `core_maths` | `0.1.1` | MIT | https://github.com/robertbastian/core_maths |
 | `cosmic-client-toolkit` | `0.2.0` | MIT | https://github.com/pop-os/cosmic-protocols |
-| `cosmic-config` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=87ab8179e1bd9880239c340855ae8862034bd0e8#87ab8179e1bd9880239c340855ae8862034bd0e8 |
-| `cosmic-config-derive` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=87ab8179e1bd9880239c340855ae8862034bd0e8#87ab8179e1bd9880239c340855ae8862034bd0e8 |
+| `cosmic-config` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36#6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36 |
+| `cosmic-config-derive` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36#6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36 |
 | `cosmic-freedesktop-icons` | `0.4.0` | MIT | https://github.com/pop-os/freedesktop-icons |
 | `cosmic-protocols` | `0.2.0` | MIT | https://github.com/pop-os/cosmic-protocols |
 | `cosmic-settings-daemon` | `0.1.0` | MPL-2.0 | git+https://github.com/pop-os/dbus-settings-bindings#eed01dd3609e90e3c8cd043656734c500956c793 |
 | `cosmic-text` | `0.19.0` | MIT OR Apache-2.0 | https://github.com/pop-os/cosmic-text |
-| `cosmic-theme` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=87ab8179e1bd9880239c340855ae8862034bd0e8#87ab8179e1bd9880239c340855ae8862034bd0e8 |
+| `cosmic-theme` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36#6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36 |
 | `cpufeatures` | `0.3.1` | MIT OR Apache-2.0 | https://github.com/RustCrypto/utils |
 | `crc32fast` | `1.5.2` | MIT OR Apache-2.0 | https://github.com/srijs/rust-crc32fast |
 | `crossbeam-utils` | `0.8.23` | MIT OR Apache-2.0 | https://github.com/crossbeam-rs/crossbeam |
@@ -172,7 +172,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `fastrand` | `2.5.0` | Apache-2.0 OR MIT | https://github.com/smol-rs/fastrand |
 | `fdeflate` | `0.3.7` | MIT OR Apache-2.0 | https://github.com/image-rs/fdeflate |
 | `find-crate` | `0.6.3` | Apache-2.0 OR MIT | https://github.com/taiki-e/find-crate |
-| `find-msvc-tools` | `0.1.12` | MIT OR Apache-2.0 | https://github.com/rust-lang/cc-rs |
+| `find-msvc-tools` | `0.1.14` | MIT OR Apache-2.0 | https://github.com/rust-lang/cc-rs |
 | `flate2` | `1.1.10` | MIT OR Apache-2.0 | https://github.com/rust-lang/flate2-rs |
 | `float-cmp` | `0.9.0` | MIT | https://github.com/mikedilger/float-cmp |
 | `float-cmp` | `0.10.0` | MIT | https://github.com/mikedilger/float-cmp |
@@ -233,7 +233,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `i18n-embed-fl` | `0.10.1` | MIT | https://github.com/kellpossible/cargo-i18n/tree/master/i18n-embed-fl |
 | `i18n-embed-impl` | `0.8.4` | MIT | https://github.com/kellpossible/cargo-i18n/tree/master/i18n-embed |
 | `iced` | `0.14.0` | MIT | https://github.com/iced-rs/iced |
-| `iced_accessibility` | `0.1.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=87ab8179e1bd9880239c340855ae8862034bd0e8#87ab8179e1bd9880239c340855ae8862034bd0e8 |
+| `iced_accessibility` | `0.1.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36#6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36 |
 | `iced_core` | `0.14.0` | MIT | https://github.com/iced-rs/iced |
 | `iced_debug` | `0.14.0` | MIT | https://github.com/iced-rs/iced |
 | `iced_futures` | `0.14.0` | MIT | https://github.com/iced-rs/iced |
@@ -276,7 +276,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `jni-sys` | `0.4.1` | MIT OR Apache-2.0 | https://github.com/jni-rs/jni-sys |
 | `jni-sys-macros` | `0.4.1` | MIT OR Apache-2.0 | https://github.com/jni-rs/jni-sys |
 | `jobserver` | `0.1.35` | MIT OR Apache-2.0 | https://github.com/rust-lang/jobserver-rs |
-| `js-sys` | `0.3.105` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys |
+| `js-sys` | `0.3.106` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys |
 | `kamadak-exif` | `0.6.1` | BSD-2-Clause | https://github.com/kamadak/exif-rs |
 | `keyboard-types` | `0.8.3` | MIT OR Apache-2.0 | https://github.com/rust-windowing/keyboard-types |
 | `khronos-egl` | `6.0.0` | MIT/Apache-2.0 | https://github.com/timothee-haudebourg/khronos-egl |
@@ -287,10 +287,10 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `kurbo` | `0.10.4` | MIT OR Apache-2.0 | https://github.com/linebender/kurbo |
 | `kurbo` | `0.11.3` | Apache-2.0 OR MIT | https://github.com/linebender/kurbo |
 | `libc` | `0.2.189` | MIT OR Apache-2.0 | https://github.com/rust-lang/libc |
-| `libcosmic` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=87ab8179e1bd9880239c340855ae8862034bd0e8#87ab8179e1bd9880239c340855ae8862034bd0e8 |
+| `libcosmic` | `1.0.0` | MPL-2.0 | git+https://github.com/pop-os/libcosmic?rev=6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36#6af8b7051b6e6c3a9d0c42c3b2fc5a14a80afe36 |
 | `libloading` | `0.8.9` | ISC | https://github.com/nagisa/rust_libloading/ |
 | `libm` | `0.2.16` | MIT | https://github.com/rust-lang/compiler-builtins |
-| `libredox` | `0.1.24` | MIT | https://gitlab.redox-os.org/redox-os/libredox.git |
+| `libredox` | `0.1.25` | MIT | https://gitlab.redox-os.org/redox-os/libredox.git |
 | `lilt` | `0.8.2` | MIT | https://github.com/cyypherus/lilt |
 | `linebender_resource_handle` | `0.1.1` | Apache-2.0 OR MIT | https://github.com/linebender/raw_resource_handle |
 | `linux-raw-sys` | `0.4.15` | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT | https://github.com/sunfishcode/linux-raw-sys |
@@ -450,12 +450,12 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `simd_cesu8` | `1.2.0` | Apache-2.0 OR MIT | https://github.com/seancroach/simd_cesu8 |
 | `simdutf8` | `0.1.5` | MIT OR Apache-2.0 | https://github.com/rusticstuff/simdutf8 |
 | `simplecss` | `0.2.2` | Apache-2.0 OR MIT | https://github.com/linebender/simplecss |
-| `siphasher` | `1.0.3` | MIT/Apache-2.0 | https://github.com/jedisct1/rust-siphash |
+| `siphasher` | `1.0.4` | MIT OR Apache-2.0 | https://github.com/jedisct1/rust-siphash |
 | `skrifa` | `0.40.0` | MIT OR Apache-2.0 | https://github.com/googlefonts/fontations |
 | `skrifa` | `0.44.0` | MIT OR Apache-2.0 | https://github.com/googlefonts/fontations |
 | `slab` | `0.4.12` | MIT | https://github.com/tokio-rs/slab |
 | `slotmap` | `1.1.1` | Zlib | https://github.com/orlp/slotmap |
-| `smallvec` | `1.16.1` | MIT OR Apache-2.0 | https://github.com/servo/rust-smallvec |
+| `smallvec` | `1.16.2` | MIT OR Apache-2.0 | https://github.com/servo/rust-smallvec |
 | `smithay-client-toolkit` | `0.20.0` | MIT | https://github.com/smithay/client-toolkit |
 | `smithay-clipboard` | `0.8.0` | MIT | https://github.com/smithay/smithay-clipboard |
 | `smol_str` | `0.3.6` | MIT OR Apache-2.0 | https://github.com/rust-lang/rust-analyzer/tree/master/lib/smol_str |
@@ -477,9 +477,9 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `tempfile` | `3.27.0` | MIT OR Apache-2.0 | https://github.com/Stebalien/tempfile |
 | `termcolor` | `1.4.1` | Unlicense OR MIT | https://github.com/BurntSushi/termcolor |
 | `thiserror` | `1.0.69` | MIT OR Apache-2.0 | https://github.com/dtolnay/thiserror |
-| `thiserror` | `2.0.20` | MIT OR Apache-2.0 | https://github.com/dtolnay/thiserror |
+| `thiserror` | `2.0.21` | MIT OR Apache-2.0 | https://github.com/dtolnay/thiserror |
 | `thiserror-impl` | `1.0.69` | MIT OR Apache-2.0 | https://github.com/dtolnay/thiserror |
-| `thiserror-impl` | `2.0.20` | MIT OR Apache-2.0 | https://github.com/dtolnay/thiserror |
+| `thiserror-impl` | `2.0.21` | MIT OR Apache-2.0 | https://github.com/dtolnay/thiserror |
 | `tiny-skia` | `0.11.4` | BSD-3-Clause | https://github.com/RazrFalcon/tiny-skia |
 | `tiny-skia` | `0.12.0` | BSD-3-Clause | https://github.com/linebender/tiny-skia |
 | `tiny-skia-path` | `0.11.4` | BSD-3-Clause | https://github.com/RazrFalcon/tiny-skia/tree/master/path |
@@ -509,7 +509,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `unicode-bidi` | `0.3.18` | MIT OR Apache-2.0 | https://github.com/servo/unicode-bidi |
 | `unicode-bidi-mirroring` | `0.4.0` | MIT/Apache-2.0 | https://github.com/RazrFalcon/unicode-bidi-mirroring |
 | `unicode-ccc` | `0.4.0` | MIT/Apache-2.0 | https://github.com/RazrFalcon/unicode-ccc |
-| `unicode-ident` | `1.0.25` | (MIT OR Apache-2.0) AND Unicode-3.0 | https://github.com/dtolnay/unicode-ident |
+| `unicode-ident` | `1.0.26` | (MIT OR Apache-2.0) AND Unicode-3.0 | https://github.com/dtolnay/unicode-ident |
 | `unicode-linebreak` | `0.1.5` | Apache-2.0 | https://github.com/axelf4/unicode-linebreak |
 | `unicode-properties` | `0.1.4` | MIT/Apache-2.0 | https://github.com/unicode-rs/unicode-properties |
 | `unicode-script` | `0.5.8` | MIT OR Apache-2.0 | https://github.com/unicode-rs/unicode-script |
@@ -526,11 +526,11 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `walkdir` | `2.5.0` | Unlicense/MIT | https://github.com/BurntSushi/walkdir |
 | `wasi` | `0.11.1+wasi-snapshot-preview1` | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT | https://github.com/bytecodealliance/wasi |
 | `wasip2` | `1.0.4+wasi-0.2.12` | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT | https://github.com/bytecodealliance/wasi-rs |
-| `wasm-bindgen` | `0.2.128` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen |
-| `wasm-bindgen-futures` | `0.4.78` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/futures |
-| `wasm-bindgen-macro` | `0.2.128` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro |
-| `wasm-bindgen-macro-support` | `0.2.128` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/main/crates/macro-support |
-| `wasm-bindgen-shared` | `0.2.128` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/shared |
+| `wasm-bindgen` | `0.2.129` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen |
+| `wasm-bindgen-futures` | `0.4.79` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/futures |
+| `wasm-bindgen-macro` | `0.2.129` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro |
+| `wasm-bindgen-macro-support` | `0.2.129` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/main/crates/macro-support |
+| `wasm-bindgen-shared` | `0.2.129` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/shared |
 | `wasmtimer` | `0.4.3` | MIT | https://github.com/whizsid/wasmtimer-rs |
 | `wayland-backend` | `0.3.17` | MIT | https://github.com/smithay/wayland-rs |
 | `wayland-client` | `0.31.15` | MIT | https://github.com/smithay/wayland-rs |
@@ -544,7 +544,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `wayland-scanner` | `0.31.11` | MIT | https://github.com/smithay/wayland-rs |
 | `wayland-server` | `0.31.14` | MIT | https://github.com/smithay/wayland-rs |
 | `wayland-sys` | `0.31.11` | MIT | https://github.com/smithay/wayland-rs |
-| `web-sys` | `0.3.105` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/web-sys |
+| `web-sys` | `0.3.106` | MIT OR Apache-2.0 | https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/web-sys |
 | `web-time` | `1.1.0` | MIT OR Apache-2.0 | https://github.com/daxpedda/web-time |
 | `weezl` | `0.1.12` | MIT OR Apache-2.0 | https://github.com/image-rs/weezl |
 | `wgpu` | `28.0.0` | MIT OR Apache-2.0 | https://github.com/gfx-rs/wgpu |
@@ -638,7 +638,7 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `yansi` | `1.0.1` | MIT OR Apache-2.0 | https://github.com/SergioBenitez/yansi |
 | `yazi` | `0.2.1` | Apache-2.0 OR MIT | https://github.com/dfrg/yazi |
 | `yoke` | `0.8.3` | Unicode-3.0 | https://github.com/unicode-org/icu4x |
-| `yoke-derive` | `0.8.3` | Unicode-3.0 | https://github.com/unicode-org/icu4x |
+| `yoke-derive` | `0.8.4` | Unicode-3.0 | https://github.com/unicode-org/icu4x |
 | `zbus` | `5.19.0` | MIT | https://github.com/z-galaxy/zbus/ |
 | `zbus-lockstep` | `0.5.2` | MIT | https://github.com/luukvanderduim/zbus-lockstep |
 | `zbus-lockstep-macros` | `0.5.2` | MIT | https://github.com/luukvanderduim/zbus-lockstep |
@@ -647,8 +647,8 @@ Generated from `cargo metadata --format-version 1` for the current lockfile. Som
 | `zbus_xml` | `5.2.1` | MIT | https://github.com/z-galaxy/zbus/ |
 | `zcheapstr` | `1.1.0` | MIT | https://github.com/z-galaxy/zcheapstr/ |
 | `zeno` | `0.3.3` | Apache-2.0 OR MIT | https://github.com/dfrg/zeno |
-| `zerocopy` | `0.8.57` | BSD-2-Clause OR Apache-2.0 OR MIT | https://github.com/google/zerocopy |
-| `zerocopy-derive` | `0.8.57` | BSD-2-Clause OR Apache-2.0 OR MIT | https://github.com/google/zerocopy |
+| `zerocopy` | `0.8.59` | BSD-2-Clause OR Apache-2.0 OR MIT | https://github.com/google/zerocopy |
+| `zerocopy-derive` | `0.8.59` | BSD-2-Clause OR Apache-2.0 OR MIT | https://github.com/google/zerocopy |
 | `zerofrom` | `0.1.8` | Unicode-3.0 | https://github.com/unicode-org/icu4x |
 | `zerofrom-derive` | `0.1.8` | Unicode-3.0 | https://github.com/unicode-org/icu4x |
 | `zerotrie` | `0.2.5` | Unicode-3.0 | https://github.com/unicode-org/icu4x |

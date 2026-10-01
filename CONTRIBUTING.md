@@ -33,7 +33,7 @@ just validate   # what every pull request must pass
 `main` is protected: every change lands through a pull request, and nobody pushes to it directly.
 
 1. Fork, branch from `main`, and keep one change per pull request.
-2. Run `just validate`. It checks formatting, pedantic Clippy, the unit tests, and the desktop and AppStream metadata.
+2. Run `just validate`. It checks formatting, pedantic Clippy, the unit tests, and the desktop and AppStream metadata, and needs `desktop-file-utils` and `appstream` installed. CI runs the same command on every pull request, with warnings treated as errors, and a pull request cannot merge until it passes.
 3. If you touched the UI, launch, clipboard, search, or keyboard handling, run the checks in [docs/smoke-test.md](docs/smoke-test.md) and attach a screenshot for visible changes.
 4. In the description, say what was wrong, what you changed, and how you checked it.
 

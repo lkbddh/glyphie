@@ -13,7 +13,7 @@ Open an issue with:
 - the Glyphie version (Settings page in the app) and how you installed it: `.deb`, Flatpak, or from source
 - your COSMIC and distribution versions
 - what you did, what you expected, and what happened instead
-- for crashes or wrong behaviour, the output of `RUST_LOG=glyphie=debug glyphie` (for the Flatpak: `RUST_LOG=glyphie=debug flatpak run com.lkbddh.Glyphie`)
+- for crashes or wrong behaviour, a debug log: close Glyphie if it is open (a second launch only focuses the running window), start it from a terminal with `RUST_LOG=glyphie=debug glyphie` (for the Flatpak: `flatpak run --env=RUST_LOG=glyphie=debug com.lkbddh.Glyphie`), and reproduce the problem in that window
 
 ## Suggesting a feature
 
@@ -21,7 +21,7 @@ Open an issue first and describe the problem rather than the solution. Glyphie h
 
 ## Setting up
 
-You need Rust 1.93 or newer, [`just`](https://github.com/casey/just), and the build packages listed under [Requirements](README.md#requirements). Running the app needs a COSMIC or other Wayland session.
+You need Rust 1.93 or newer, [`just`](https://github.com/casey/just), and the build packages listed under [From source](README.md#from-source). Running the app needs a COSMIC or other Wayland session.
 
 ```bash
 git clone https://github.com/lkbddh/glyphie.git

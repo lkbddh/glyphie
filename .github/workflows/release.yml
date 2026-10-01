@@ -1,0 +1,106 @@
+name: Release
+
+# A version tag builds the .deb and the Flatpak bundle and attaches them to its
+# GitHub release. Pull requests that touch packaging build both without publishing.
+on:
+  push:
+    tags: ["v*"]
+  pull_request:
+    paths:
+      - justfile
+      - Cargo.lock
+      - cargo-sources.json
+      - com.lkbddh.Glyphie.*
+      - icons/**
+      - .github/workflows/release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: version
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match Cargo.toml version $version"
+            exit 1
+          fi
+
+  deb:
+    needs: version
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config libdrm-dev libwayland-dev libxkbcommon-dev dpkg-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+      - uses: Swatinem/rust-cache@v2
+      - run: just build-release && just deb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: target/deb/*.deb
+          if-no-files-found: error
+
+  flatpak:
+    needs: version
+    runs-on: ubuntu-24.04
+    env:
+      BUNDLE: glyphie-${{ needs.version.outputs.version }}.flatpak
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      - name: Build the bundle
+        run: |
+          flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse \
+            --force-clean --repo=repo build-dir com.lkbddh.Glyphie.yml
+          flatpak build-bundle repo "$BUNDLE" com.lkbddh.Glyphie \
+            --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: ${{ env.BUNDLE }}
+          if-no-files-found: error
+
+  publish:
+    if: github.ref_type == 'tag'
+    needs: [version, deb, flatpak]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - run: sha256sum *.deb *.flatpak > SHA256SUMS
+      - name: Attach to the release
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" *.deb *.flatpak SHA256SUMS --clobber
+          else
+            gh release create "$TAG" *.deb *.flatpak SHA256SUMS --draft \
+              --title "Glyphie ${{ needs.version.outputs.version }}" \
+              --notes "Release notes to follow."
+          fi

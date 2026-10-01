@@ -10,7 +10,7 @@ Use this before posting or tagging a release.
 - Refresh `THIRD_PARTY_NOTICES.md` after dependency, bundled tool, embedded data, or icon changes.
 - Run `just validate`.
 - Run `cargo build --release`.
-- Build the release assets: `just deb` for `glyphie_<version>_amd64.deb`, and the Flatpak bundle with `flatpak-builder --force-clean --repo=repo build-dir com.lkbddh.Glyphie.yml` then `flatpak build-bundle repo glyphie-<version>.flatpak com.lkbddh.Glyphie --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo`.
+- Push the `v<version>` tag. The Release workflow builds `glyphie_<version>_amd64.deb` and `glyphie-<version>.flatpak`, then attaches them and `SHA256SUMS` to the release, creating a draft if none exists. To build locally instead, run `just deb` and the `flatpak-builder` / `flatpak build-bundle` steps in `.github/workflows/release.yml`.
 - Test `just install` on a clean prefix or VM.
 - Confirm `wl-copy` clipboard persistence in a Wayland session.
 - Confirm single-instance launch focuses the existing picker.

@@ -10,7 +10,7 @@ use crate::theme::{
     CHIP_EMOJI_SIZE, CHIP_HEIGHT, CHIP_PADDING_H, CHIP_PADDING_V, EMOJI_BUTTON_SIZE, EMOJI_FONT,
     FONT_SIZE_EMOJI, FONT_SIZE_EMPTY_ICON, FONT_SIZE_MD, FONT_SIZE_SM, FONT_SIZE_XS, GRID_SPACING,
     SKIN_TONE_CIRCLE_SIZE, SKIN_TONE_RING_GAP, SKIN_TONE_RING_WIDTH, SPACING_MD, SPACING_SM,
-    SPACING_XS, TRAY_SCROLLABLE_HEIGHT,
+    SPACING_XS, SUBCATEGORY_HEADER_HEIGHT, TRAY_SCROLLABLE_HEIGHT,
 };
 use crate::{
     category_icon, CosmicEmojiPicker, Message, EMOJI_SCROLLABLE_ID, ICON_CARET_DOWN, ICON_CARET_UP,
@@ -414,9 +414,7 @@ impl CosmicEmojiPicker {
         let mut current_subcategory: Option<&str> = None;
         let mut current_group: Vec<Element<Message>> = Vec::with_capacity(indices.len().min(64));
 
-        let use_subcategories = self.config.show_subcategories
-            && self.selected_category != EmojiCategory::Recent
-            && self.search_query.is_empty();
+        let use_subcategories = self.shows_subcategories();
 
         for &idx in indices {
             let Some(emoji) = EMOJIS.get(idx) else {
@@ -438,8 +436,12 @@ impl CosmicEmojiPicker {
 
             if subcategory != current_subcategory {
                 if let Some(subcat) = subcategory {
-                    content =
-                        content.push(widget::text(subcat).size(FONT_SIZE_XS).class(text_muted()));
+                    content = content.push(
+                        widget::text(subcat)
+                            .size(FONT_SIZE_XS)
+                            .line_height(cosmic::iced::Pixels(SUBCATEGORY_HEADER_HEIGHT))
+                            .class(text_muted()),
+                    );
                 }
                 current_subcategory = subcategory;
             }

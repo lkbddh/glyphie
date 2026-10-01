@@ -31,11 +31,13 @@ use emoji_data::{
     apply_skin_tone, get_emoji_gender, search_emojis, strip_skin_tone, EmojiCategory, GenderFilter,
     SkinTone, EMOJIS, EMOJIS_BY_CATEGORY,
 };
-use picker_state::{active_copy_index, next_highlight_position};
+use picker_state::{
+    active_copy_index, grid_rows, next_highlight_position, row_top, vertical_highlight_position,
+};
 use theme::{
-    EMOJI_BUTTON_SIZE, GRID_SPACING, HEADER_BUTTON_PADDING, HEADER_ICON_SIZE,
-    KEYBOARD_GRID_COLUMNS, KEYBOARD_GRID_COLUMNS_DELTA, MAX_SELECTION, SEARCH_DEBOUNCE_MS,
-    SELECTION_FEEDBACK_MS, SPACING_MD, SPACING_SM, SPACING_XS, WINDOW_HEIGHT, WINDOW_WIDTH,
+    EMOJI_BUTTON_SIZE, HEADER_BUTTON_PADDING, HEADER_ICON_SIZE, KEYBOARD_GRID_COLUMNS,
+    MAX_SELECTION, SEARCH_DEBOUNCE_MS, SELECTION_FEEDBACK_MS, SPACING_MD, SPACING_SM, SPACING_XS,
+    WINDOW_HEIGHT, WINDOW_WIDTH,
 };
 
 pub const APP_ID: &str = "com.lkbddh.Glyphie";
@@ -405,16 +407,16 @@ impl Application for CosmicEmojiPicker {
                     return self.copy_active_emoji();
                 }
                 Key::Named(Named::ArrowDown) => {
-                    return self.move_highlight(KEYBOARD_GRID_COLUMNS_DELTA);
+                    return self.move_highlight(1, true);
                 }
                 Key::Named(Named::ArrowUp) => {
-                    return self.move_highlight(-KEYBOARD_GRID_COLUMNS_DELTA);
+                    return self.move_highlight(-1, true);
                 }
                 Key::Named(Named::ArrowRight) if !captured => {
-                    return self.move_highlight(1);
+                    return self.move_highlight(1, false);
                 }
                 Key::Named(Named::ArrowLeft) if !captured => {
-                    return self.move_highlight(-1);
+                    return self.move_highlight(-1, false);
                 }
                 _ if COPY_SHORTCUT.matches(modifiers, &key, Some(&physical_key)) => {
                     return self.copy_active_emoji();
@@ -575,31 +577,55 @@ impl CosmicEmojiPicker {
         self.copy_single_emoji(idx)
     }
 
-    fn move_highlight(&mut self, delta: isize) -> Task<Message> {
+    /// Moves the highlight `delta` emojis, or `delta` rows when `by_row`, and
+    /// scrolls so its row stays in view.
+    fn move_highlight(&mut self, delta: isize, by_row: bool) -> Task<Message> {
         if self.show_settings_menu || self.cached_indices.is_empty() {
             return Task::none();
         }
 
+        let rows = grid_rows(&self.group_sizes(), KEYBOARD_GRID_COLUMNS);
         let current_pos = self.highlighted_index.and_then(|idx| {
             self.cached_indices
                 .iter()
                 .position(|&candidate| candidate == idx)
         });
-        let Some(next_pos) = next_highlight_position(self.cached_indices.len(), current_pos, delta)
-        else {
+        let next_pos = if by_row {
+            vertical_highlight_position(&rows, current_pos, delta)
+        } else {
+            next_highlight_position(self.cached_indices.len(), current_pos, delta)
+        };
+        let Some(next_pos) = next_pos else {
             return Task::none();
         };
 
         self.highlighted_index = self.cached_indices.get(next_pos).copied();
-        Self::scroll_highlight_into_view(next_pos)
-    }
-
-    fn scroll_highlight_into_view(position: usize) -> Task<Message> {
-        let row = u16::try_from(position / KEYBOARD_GRID_COLUMNS).unwrap_or(u16::MAX);
-        let row_height = EMOJI_BUTTON_SIZE + f32::from(GRID_SPACING);
-        let y = (f32::from(row) * row_height - EMOJI_BUTTON_SIZE).max(0.0);
+        let row = rows
+            .iter()
+            .position(|r| next_pos < r.start + r.len)
+            .unwrap_or(0);
+        let y = (row_top(&rows, row, self.shows_subcategories()) - EMOJI_BUTTON_SIZE).max(0.0);
 
         widget_operation::scroll_to(EMOJI_SCROLLABLE_ID.clone(), AbsoluteOffset { x: 0.0, y })
+    }
+
+    /// Whether the grid is split under subcategory headers.
+    pub(crate) fn shows_subcategories(&self) -> bool {
+        self.config.show_subcategories
+            && self.selected_category != EmojiCategory::Recent
+            && self.search_query.is_empty()
+    }
+
+    /// Sizes of the runs the view draws as separate `flex_row`s.
+    fn group_sizes(&self) -> Vec<usize> {
+        if !self.shows_subcategories() {
+            return vec![self.cached_indices.len()];
+        }
+        let subcategory = |idx: usize| EMOJIS.get(idx).and_then(|e| e.subcategory.as_deref());
+        self.cached_indices
+            .chunk_by(|&a, &b| subcategory(a) == subcategory(b))
+            .map(<[usize]>::len)
+            .collect()
     }
 
     fn highlight_first_result_if_searching(&mut self) {

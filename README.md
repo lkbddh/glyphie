@@ -4,6 +4,8 @@
 [![Latest release](https://img.shields.io/github/v/release/lkbddh/glyphie?sort=semver)](https://github.com/lkbddh/glyphie/releases/latest)
 [![Built for COSMIC](https://img.shields.io/badge/built%20for-COSMIC-6d28d9)](https://github.com/pop-os/cosmic-epoch)
 
+![Glyphie, the fast emoji picker for COSMIC](docs/cover.png)
+
 Glyphie is a fast, lightweight, libcosmic-native emoji picker for COSMIC/Wayland.
 It's built for the "one emoji, right now" moment: open, search, click to copy, keep typing.
 
@@ -51,31 +53,37 @@ Instead, bind it in COSMIC:
 
 ## Installation
 
-### Requirements
+Glyphie runs on Linux desktops with COSMIC or another Wayland session. Download the package for your system from the [latest release](https://github.com/lkbddh/glyphie/releases/latest).
 
-Glyphie targets Linux desktops running COSMIC or another Wayland session.
+### Debian, Ubuntu, Pop!_OS
 
-Native installs need:
+The `.deb` is for amd64 on Ubuntu 24.04, Pop!_OS 24.04, Debian 13, or newer. `apt` pulls in `wl-clipboard` and the emoji font:
 
-- Git
-- Rust 1.93 or newer
-- `just`
-- `wl-clipboard` for persistent Wayland clipboard support
-- A color emoji font, such as `Noto Color Emoji`
+```bash
+sudo apt install ./glyphie_0.3.1_amd64.deb
+```
 
-On Pop!_OS / Ubuntu-like systems, the native build/runtime packages are typically:
+Remove it with `sudo apt remove glyphie`.
+
+### Flatpak, any distribution
+
+```bash
+flatpak install --user glyphie-0.3.1.flatpak
+flatpak run com.lkbddh.Glyphie
+```
+
+The Freedesktop runtime comes from Flathub automatically. `wl-copy` is bundled.
+
+### From source
+
+You need Rust 1.93 or newer, [`just`](https://github.com/casey/just), `wl-clipboard`, and a color emoji font such as Noto Color Emoji. On Pop!_OS and Ubuntu:
 
 ```bash
 sudo apt install build-essential git pkg-config libdrm-dev libwayland-dev libxkbcommon-dev wl-clipboard fonts-noto-color-emoji
+cargo install just   # or install it from your package manager
 ```
 
-Install Rust with `rustup`, then install `just` from your package manager or with:
-
-```bash
-cargo install just
-```
-
-### From source (recommended for Pop!_OS / COSMIC)
+Then build and install:
 
 ```bash
 git clone https://github.com/lkbddh/glyphie.git
@@ -84,64 +92,21 @@ just build-release
 sudo just install
 ```
 
-This installs the binary, desktop entry, metainfo, and icons to `/usr`.
+This installs the binary, desktop entry, metainfo, and icons to `/usr`. Use `sudo just install prefix=/usr/local` for another prefix, and `sudo just uninstall` to remove it.
 
-To install to a different prefix:
+### Building the packages yourself
 
-```bash
-sudo just install prefix=/usr/local
-```
+Each release's packages are built by the Release workflow when a version tag is pushed. To build them locally:
 
-To uninstall:
+- **`.deb`:** `just build-release && just deb`. It lands in `target/deb/`.
+- **Flatpak:** install `flatpak-builder` and the Freedesktop 26.08 runtime, SDK, and Rust extension, then build and install:
 
-```bash
-sudo just uninstall
-```
+  ```bash
+  flatpak install --user flathub org.freedesktop.Platform//26.08 org.freedesktop.Sdk//26.08 org.freedesktop.Sdk.Extension.rust-stable//26.08
+  flatpak-builder --user --install --force-clean build-dir com.lkbddh.Glyphie.yml
+  ```
 
-### Debian / Ubuntu package
-
-Each [GitHub release](https://github.com/lkbddh/glyphie/releases/latest) also carries a `.deb` for amd64 on Ubuntu 24.04, Pop!_OS 24.04, Debian 13, or newer. `apt` pulls in `wl-clipboard` and the emoji font:
-
-```bash
-sudo apt install ./glyphie_0.3.1_amd64.deb
-```
-
-Remove it with `sudo apt remove glyphie`. To build the package yourself, run `just build-release && just deb`; it lands in `target/deb/`.
-
-### Flatpak
-
-The quickest path is the prebuilt bundle attached to each [GitHub release](https://github.com/lkbddh/glyphie/releases/latest):
-
-```bash
-flatpak install --user glyphie-0.3.1.flatpak
-flatpak run com.lkbddh.Glyphie
-```
-
-To build it yourself, Flatpak installs need `flatpak-builder` and the runtimes/extensions listed in `com.lkbddh.Glyphie.yml`.
-
-If `flatpak-builder` reports missing runtimes, install the Freedesktop 26.08 runtime, SDK, and Rust stable extension from Flathub:
-
-```bash
-flatpak install --user flathub org.freedesktop.Platform//26.08 org.freedesktop.Sdk//26.08 org.freedesktop.Sdk.Extension.rust-stable//26.08
-```
-
-The manifest uses the checked-in `cargo-sources.json` file for offline Rust dependency sources. Regenerate it after dependency changes with [`flatpak-cargo-generator.py`](https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo) (needs `aiohttp`, `tomlkit`, and `PyYAML`):
-
-```bash
-python3 flatpak-cargo-generator.py Cargo.lock -o cargo-sources.json
-```
-
-Build and install locally:
-
-```bash
-flatpak-builder --user --install --force-clean build-dir com.lkbddh.Glyphie.yml
-```
-
-Run:
-
-```bash
-flatpak run com.lkbddh.Glyphie
-```
+  The manifest builds offline from the checked-in `cargo-sources.json`. Regenerate it after dependency changes with [`flatpak-cargo-generator.py`](https://github.com/flatpak/flatpak-builder-tools/tree/master/cargo) (needs `aiohttp`, `tomlkit`, and `PyYAML`): `python3 flatpak-cargo-generator.py Cargo.lock -o cargo-sources.json`.
 
 ### Development
 
@@ -241,6 +206,8 @@ Changes are picked up live — editing the config files externally will update t
 Emoji data is embedded from `data/emojis.json` at compile time (no network access required).
 
 ## Security
+
+Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md).
 
 ### Dependency Auditing
 

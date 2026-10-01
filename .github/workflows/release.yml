@@ -73,8 +73,8 @@ jobs:
           bundle: glyphie-${{ needs.version.outputs.version }}.flatpak
           artifact-name: flatpak
 
-  # Automation only stages a draft. A person publishes it after the smoke tests,
-  # and a published release's files are never replaced.
+  # Automation only stages a draft. A person publishes it after the smoke tests.
+  # Uploads never replace a file, so nothing is ever deleted from a release.
   publish:
     if: github.ref_type == 'tag'
     needs: [version, deb, flatpak]
@@ -101,7 +101,8 @@ jobs:
               --title "Glyphie ${{ needs.version.outputs.version }}" \
               --notes "Release notes to follow."
           elif [ "$is_draft" = true ]; then
-            gh release upload "$TAG" *.deb *.flatpak SHA256SUMS --clobber
+            # Fails if a file of the same name is already attached; remove it from the draft to re-run.
+            gh release upload "$TAG" *.deb *.flatpak SHA256SUMS
           else
             echo "::error::Release $TAG is already published; its files are left untouched."
             exit 1

@@ -8,6 +8,7 @@ on:
   pull_request:
     paths:
       - justfile
+      - Cargo.toml
       - Cargo.lock
       - cargo-sources.json
       - com.lkbddh.Glyphie.*
@@ -27,7 +28,7 @@ jobs:
       - uses: actions/checkout@v5
       - id: version
         run: |
-          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -1)
+          version=$(python3 -c 'import tomllib; print(tomllib.load(open("Cargo.toml", "rb"))["package"]["version"])')
           echo "version=$version" >> "$GITHUB_OUTPUT"
           if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$version" ]; then
             echo "::error::Tag $GITHUB_REF_NAME does not match Cargo.toml version $version"
@@ -80,10 +81,15 @@ jobs:
           path: ${{ env.BUNDLE }}
           if-no-files-found: error
 
+  # Automation only stages a draft. A person publishes it after the smoke tests,
+  # and a published release's files are never replaced.
   publish:
     if: github.ref_type == 'tag'
     needs: [version, deb, flatpak]
     runs-on: ubuntu-24.04
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
     permissions:
       contents: write
     env:
@@ -95,12 +101,16 @@ jobs:
         with:
           merge-multiple: true
       - run: sha256sum *.deb *.flatpak > SHA256SUMS
-      - name: Attach to the release
+      - name: Attach to the draft release
         run: |
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" *.deb *.flatpak SHA256SUMS --clobber
-          else
+          is_draft=$(gh release view "$TAG" --json isDraft --jq .isDraft 2>/dev/null || echo absent)
+          if [ "$is_draft" = absent ]; then
             gh release create "$TAG" *.deb *.flatpak SHA256SUMS --draft \
               --title "Glyphie ${{ needs.version.outputs.version }}" \
               --notes "Release notes to follow."
+          elif [ "$is_draft" = true ]; then
+            gh release upload "$TAG" *.deb *.flatpak SHA256SUMS --clobber
+          else
+            echo "::error::Release $TAG is already published; its files are left untouched."
+            exit 1
           fi

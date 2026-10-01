@@ -10,7 +10,7 @@ Use this before posting or tagging a release.
 - Refresh `THIRD_PARTY_NOTICES.md` after dependency, bundled tool, embedded data, or icon changes.
 - Run `just validate`.
 - Run `cargo build --release`.
-- Push the `v<version>` tag. The Release workflow builds `glyphie_<version>_amd64.deb` and `glyphie-<version>.flatpak`, then attaches them and `SHA256SUMS` to the release, creating a draft if none exists. To build locally instead, run `just deb` and the `flatpak-builder` / `flatpak build-bundle` steps in `.github/workflows/release.yml`.
+- Push the `v<version>` tag. The Release workflow builds `glyphie_<version>_amd64.deb` and `glyphie-<version>.flatpak` and stages them with `SHA256SUMS` on a draft release, creating the draft if needed. Write the notes, run the checks below against the draft's packages, then publish it. The workflow never changes a published release. To build locally instead, run `just deb` and the `flatpak-builder` / `flatpak build-bundle` steps in `.github/workflows/release.yml`.
 - Test `just install` on a clean prefix or VM.
 - Confirm `wl-copy` clipboard persistence in a Wayland session.
 - Confirm single-instance launch focuses the existing picker.

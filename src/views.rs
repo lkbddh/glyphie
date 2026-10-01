@@ -378,8 +378,8 @@ impl CosmicEmojiPicker {
         Some(tray.into())
     }
 
-    #[allow(clippy::too_many_lines)]
-    pub(crate) fn view_emoji_content_with(&self, indices: &[usize]) -> Element<'_, Message> {
+    pub(crate) fn view_emoji_content(&self) -> Element<'_, Message> {
+        let indices = &self.cached_indices;
         if indices.is_empty() {
             let (icon, title, subtitle) = if !emoji_data_loaded() {
                 ("⚠️", fl!("emoji-data-error"), fl!("emoji-data-error-hint"))
@@ -410,99 +410,33 @@ impl CosmicEmojiPicker {
             .into();
         }
 
+        // The same rows keyboard navigation moves through, so the two cannot disagree.
+        let rows = self.layout_rows();
+        let with_headers = self.shows_subcategories();
         let mut content = widget::Column::new().spacing(SPACING_SM);
-        let mut current_subcategory: Option<&str> = None;
-        let mut current_group: Vec<Element<Message>> = Vec::with_capacity(indices.len().min(64));
 
-        let use_subcategories = self.shows_subcategories();
-
-        for &idx in indices {
-            let Some(emoji) = EMOJIS.get(idx) else {
-                log::warn!("Invalid emoji index {idx}, skipping");
-                continue;
-            };
-            let subcategory = if use_subcategories {
-                emoji.subcategory.as_deref()
-            } else {
-                None
-            };
-
-            if subcategory != current_subcategory && !current_group.is_empty() {
-                let grid = widget::flex_row(std::mem::take(&mut current_group))
-                    .row_spacing(GRID_SPACING)
-                    .column_spacing(GRID_SPACING);
-                content = content.push(grid);
+        for group in rows.chunk_by(|a, b| a.group == b.group) {
+            let subcategory = EMOJIS
+                .get(indices[group[0].start])
+                .and_then(|e| e.subcategory.as_deref());
+            if let Some(subcat) = subcategory.filter(|_| with_headers) {
+                content = content.push(
+                    widget::text(subcat)
+                        .size(FONT_SIZE_XS)
+                        .line_height(cosmic::iced::Pixels(SUBCATEGORY_HEADER_HEIGHT))
+                        .class(text_muted()),
+                );
             }
 
-            if subcategory != current_subcategory {
-                if let Some(subcat) = subcategory {
-                    content = content.push(
-                        widget::text(subcat)
-                            .size(FONT_SIZE_XS)
-                            .line_height(cosmic::iced::Pixels(SUBCATEGORY_HEADER_HEIGHT))
-                            .class(text_muted()),
-                    );
-                }
-                current_subcategory = subcategory;
-            }
-
-            let display_emoji = self.get_display_emoji(idx);
-            let is_selected = self.selected_indices.contains(&idx);
-            let is_rejected = self.selection_rejected_idx == Some(idx);
-            let is_highlighted = self.highlighted_index == Some(idx);
-
-            let on_press = if self.multiselect_mode {
-                Message::ToggleEmojiSelection(idx)
-            } else {
-                Message::EmojiSelected(idx)
-            };
-
-            let btn_class = if is_selected {
-                cosmic::theme::Button::Suggested
-            } else if is_rejected || is_highlighted {
-                cosmic::theme::Button::Standard
-            } else {
-                cosmic::theme::Button::Text
-            };
-
-            let text_class = if is_rejected {
-                text_muted()
-            } else {
-                cosmic::theme::Text::Default
-            };
-
-            let emoji_btn = button::custom(
-                container(
-                    widget::text(display_emoji)
-                        .size(FONT_SIZE_EMOJI)
-                        .font(EMOJI_FONT)
-                        .class(text_class),
-                )
-                .width(Length::Fill)
-                .height(Length::Fill)
-                .align_x(cosmic::iced::alignment::Horizontal::Center)
-                .align_y(cosmic::iced::alignment::Vertical::Center),
-            )
-            .on_press(on_press)
-            .width(Length::Fixed(EMOJI_BUTTON_SIZE))
-            .height(Length::Fixed(EMOJI_BUTTON_SIZE))
-            .name(emoji.name.as_str())
-            .class(btn_class);
-
-            current_group.push(
-                widget::tooltip(
-                    emoji_btn,
-                    widget::text(&emoji.name),
-                    widget::tooltip::Position::Top,
-                )
-                .into(),
-            );
-        }
-
-        if !current_group.is_empty() {
-            let grid = widget::flex_row(current_group)
-                .row_spacing(GRID_SPACING)
-                .column_spacing(GRID_SPACING);
+            let grid =
+                group
+                    .iter()
+                    .fold(widget::Column::new().spacing(GRID_SPACING), |grid, row| {
+                        let buttons = indices[row.start..row.start + row.len]
+                            .iter()
+                            .filter_map(|&idx| self.emoji_button(idx));
+                        grid.push(widget::Row::with_children(buttons).spacing(GRID_SPACING))
+                    });
             content = content.push(grid);
         }
 
@@ -511,5 +445,64 @@ impl CosmicEmojiPicker {
             .width(Length::Fill)
             .height(Length::Fill)
             .into()
+    }
+
+    fn emoji_button(&self, idx: usize) -> Option<Element<'_, Message>> {
+        let Some(emoji) = EMOJIS.get(idx) else {
+            log::warn!("Invalid emoji index {idx}, skipping");
+            return None;
+        };
+
+        let display_emoji = self.get_display_emoji(idx);
+        let is_selected = self.selected_indices.contains(&idx);
+        let is_rejected = self.selection_rejected_idx == Some(idx);
+        let is_highlighted = self.highlighted_index == Some(idx);
+
+        let on_press = if self.multiselect_mode {
+            Message::ToggleEmojiSelection(idx)
+        } else {
+            Message::EmojiSelected(idx)
+        };
+
+        let btn_class = if is_selected {
+            cosmic::theme::Button::Suggested
+        } else if is_rejected || is_highlighted {
+            cosmic::theme::Button::Standard
+        } else {
+            cosmic::theme::Button::Text
+        };
+
+        let text_class = if is_rejected {
+            text_muted()
+        } else {
+            cosmic::theme::Text::Default
+        };
+
+        let emoji_btn = button::custom(
+            container(
+                widget::text(display_emoji)
+                    .size(FONT_SIZE_EMOJI)
+                    .font(EMOJI_FONT)
+                    .class(text_class),
+            )
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .align_x(cosmic::iced::alignment::Horizontal::Center)
+            .align_y(cosmic::iced::alignment::Vertical::Center),
+        )
+        .on_press(on_press)
+        .width(Length::Fixed(EMOJI_BUTTON_SIZE))
+        .height(Length::Fixed(EMOJI_BUTTON_SIZE))
+        .name(emoji.name.as_str())
+        .class(btn_class);
+
+        Some(
+            widget::tooltip(
+                emoji_btn,
+                widget::text(&emoji.name),
+                widget::tooltip::Position::Top,
+            )
+            .into(),
+        )
     }
 }

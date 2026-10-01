@@ -33,6 +33,7 @@ use emoji_data::{
 };
 use picker_state::{
     active_copy_index, grid_rows, next_highlight_position, row_top, vertical_highlight_position,
+    GridRow,
 };
 use theme::{
     EMOJI_BUTTON_SIZE, HEADER_BUTTON_PADDING, HEADER_ICON_SIZE, KEYBOARD_GRID_COLUMNS,
@@ -310,7 +311,7 @@ impl Application for CosmicEmojiPicker {
 
         let category_bar = self.view_category_bar();
         let skin_tone_bar = self.view_skin_tone_bar(emoji_count);
-        let emoji_content = self.view_emoji_content_with(&self.cached_indices);
+        let emoji_content = self.view_emoji_content();
         let selection_tray = self.view_selection_tray();
 
         let emoji_card = container(
@@ -584,7 +585,7 @@ impl CosmicEmojiPicker {
             return Task::none();
         }
 
-        let rows = grid_rows(&self.group_sizes(), KEYBOARD_GRID_COLUMNS);
+        let rows = self.layout_rows();
         let current_pos = self.highlighted_index.and_then(|idx| {
             self.cached_indices
                 .iter()
@@ -616,16 +617,19 @@ impl CosmicEmojiPicker {
             && self.search_query.is_empty()
     }
 
-    /// Sizes of the runs the view draws as separate `flex_row`s.
-    fn group_sizes(&self) -> Vec<usize> {
-        if !self.shows_subcategories() {
-            return vec![self.cached_indices.len()];
-        }
-        let subcategory = |idx: usize| EMOJIS.get(idx).and_then(|e| e.subcategory.as_deref());
-        self.cached_indices
-            .chunk_by(|&a, &b| subcategory(a) == subcategory(b))
-            .map(<[usize]>::len)
-            .collect()
+    /// The emoji grid's rows over `cached_indices`: one group per subcategory
+    /// when headers are shown. The view draws exactly these rows.
+    pub(crate) fn layout_rows(&self) -> Vec<GridRow> {
+        let group_sizes = if self.shows_subcategories() {
+            let subcategory = |idx: usize| EMOJIS.get(idx).and_then(|e| e.subcategory.as_deref());
+            self.cached_indices
+                .chunk_by(|&a, &b| subcategory(a) == subcategory(b))
+                .map(<[usize]>::len)
+                .collect()
+        } else {
+            vec![self.cached_indices.len()]
+        };
+        grid_rows(&group_sizes, KEYBOARD_GRID_COLUMNS)
     }
 
     fn highlight_first_result_if_searching(&mut self) {

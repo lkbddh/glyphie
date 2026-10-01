@@ -9,8 +9,8 @@ pub(crate) struct GridRow {
     pub(crate) len: usize,
 }
 
-/// Lays groups out the way the view does: each group is its own `flex_row`,
-/// so it starts on a new row and wraps after `columns` emojis.
+/// Splits each group into rows of at most `columns`; a group always starts a
+/// new row. The view draws exactly these rows (`layout_rows`).
 pub(crate) fn grid_rows(group_sizes: &[usize], columns: usize) -> Vec<GridRow> {
     let mut rows = Vec::new();
     let mut start = 0;
@@ -59,7 +59,7 @@ pub(crate) fn row_top(rows: &[GridRow], row: usize, with_headers: bool) -> f32 {
     for pair in rows[..rows.len().min(row + 1)].windows(2) {
         top += EMOJI_BUTTON_SIZE;
         top += if pair[0].group == pair[1].group {
-            f32::from(GRID_SPACING)
+            GRID_SPACING
         } else {
             SPACING_SM + header
         };
@@ -178,7 +178,7 @@ mod tests {
     fn row_top_adds_headers_and_group_gaps() {
         let rows = sample_rows();
         let header = SUBCATEGORY_HEADER_HEIGHT + SPACING_SM;
-        let step = EMOJI_BUTTON_SIZE + f32::from(GRID_SPACING);
+        let step = EMOJI_BUTTON_SIZE + GRID_SPACING;
         assert_eq!(row_top(&rows, 0, false), SPACING_SM);
         assert_eq!(row_top(&rows, 1, true), SPACING_SM + header + step);
         assert_eq!(

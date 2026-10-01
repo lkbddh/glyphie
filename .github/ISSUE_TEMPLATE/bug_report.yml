@@ -39,5 +39,5 @@ body:
     attributes:
       label: Debug log
       description: |
-        Run `RUST_LOG=glyphie=debug glyphie` (Flatpak: `RUST_LOG=glyphie=debug flatpak run com.lkbddh.Glyphie`), reproduce the problem, and paste the output.
+        Close Glyphie if it is open (a second launch only focuses the running window), then start it from a terminal with `RUST_LOG=glyphie=debug glyphie` (Flatpak: `flatpak run --env=RUST_LOG=glyphie=debug com.lkbddh.Glyphie`), reproduce the problem in that window, and paste the output.
       render: text

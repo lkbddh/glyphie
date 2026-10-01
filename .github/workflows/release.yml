@@ -60,26 +60,18 @@ jobs:
   flatpak:
     needs: version
     runs-on: ubuntu-24.04
-    env:
-      BUNDLE: glyphie-${{ needs.version.outputs.version }}.flatpak
+    # Flathub's CI image carries a current flatpak-builder and appstream; the
+    # runner's own Ubuntu packages fail the AppStream compose step.
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-26.08
+      options: --privileged
     steps:
       - uses: actions/checkout@v5
-      - name: Install flatpak-builder
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder elfutils
-          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-      - name: Build the bundle
-        run: |
-          flatpak-builder --user --install-deps-from=flathub --disable-rofiles-fuse \
-            --force-clean --repo=repo build-dir com.lkbddh.Glyphie.yml
-          flatpak build-bundle repo "$BUNDLE" com.lkbddh.Glyphie \
-            --runtime-repo=https://dl.flathub.org/repo/flathub.flatpakrepo
-      - uses: actions/upload-artifact@v4
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
-          name: flatpak
-          path: ${{ env.BUNDLE }}
-          if-no-files-found: error
+          manifest-path: com.lkbddh.Glyphie.yml
+          bundle: glyphie-${{ needs.version.outputs.version }}.flatpak
+          artifact-name: flatpak
 
   # Automation only stages a draft. A person publishes it after the smoke tests,
   # and a published release's files are never replaced.

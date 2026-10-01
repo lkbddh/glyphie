@@ -254,7 +254,7 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for open-source dependency,
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit issues and pull requests.
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to report bugs and what a pull request needs, and [AGENTS.md](AGENTS.md) if you work with an AI coding agent.
 
 ## License
 

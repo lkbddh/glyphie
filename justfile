@@ -1,5 +1,5 @@
 name := 'glyphie'
-export APPID := 'com.aldeastudio.Glyphie'
+export APPID := 'com.lkbddh.Glyphie'
 
 rootdir := ''
 prefix := '/usr'

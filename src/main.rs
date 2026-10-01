@@ -38,7 +38,7 @@ use theme::{
     SELECTION_FEEDBACK_MS, SPACING_MD, SPACING_SM, SPACING_XS, WINDOW_HEIGHT, WINDOW_WIDTH,
 };
 
-pub const APP_ID: &str = "com.aldeastudio.Glyphie";
+pub const APP_ID: &str = "com.lkbddh.Glyphie";
 
 static SEARCH_INPUT_ID: LazyLock<widget::Id> = LazyLock::new(widget::Id::unique);
 pub(crate) static EMOJI_SCROLLABLE_ID: LazyLock<widget::Id> = LazyLock::new(widget::Id::unique);

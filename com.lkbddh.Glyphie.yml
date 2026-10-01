@@ -1,4 +1,4 @@
-app-id: com.aldeastudio.Glyphie
+app-id: com.lkbddh.Glyphie
 runtime: org.freedesktop.Platform
 runtime-version: '26.08'
 sdk: org.freedesktop.Sdk
@@ -14,8 +14,8 @@ finish-args:
   # COSMIC themes (read-only); cosmic-config writes Glyphie's own config and
   # state to the host XDG dirs, not ~/.var/app, so those two need write access
   - --filesystem=xdg-config/cosmic:ro
-  - --filesystem=xdg-config/cosmic/com.aldeastudio.Glyphie:create
-  - --filesystem=~/.local/state/cosmic/com.aldeastudio.Glyphie:create
+  - --filesystem=xdg-config/cosmic/com.lkbddh.Glyphie:create
+  - --filesystem=~/.local/state/cosmic/com.lkbddh.Glyphie:create
 
 build-options:
   append-path: /usr/lib/sdk/rust-stable/bin
@@ -41,15 +41,15 @@ modules:
       - cargo --offline fetch --manifest-path Cargo.toml --verbose
       - cargo --offline build --release --verbose
       - install -Dm755 target/release/glyphie /app/bin/glyphie
-      - install -Dm644 com.aldeastudio.Glyphie.desktop /app/share/applications/com.aldeastudio.Glyphie.desktop
-      - install -Dm644 com.aldeastudio.Glyphie.metainfo.xml /app/share/metainfo/com.aldeastudio.Glyphie.metainfo.xml
-      - install -Dm644 icons/hicolor/scalable/apps/glyphie.svg /app/share/icons/hicolor/scalable/apps/com.aldeastudio.Glyphie.svg
-      - install -Dm644 icons/hicolor/128x128/apps/glyphie.png /app/share/icons/hicolor/128x128/apps/com.aldeastudio.Glyphie.png
-      - install -Dm644 icons/hicolor/256x256/apps/glyphie.png /app/share/icons/hicolor/256x256/apps/com.aldeastudio.Glyphie.png
-      - install -Dm644 icons/hicolor/64x64/apps/glyphie.png /app/share/icons/hicolor/64x64/apps/com.aldeastudio.Glyphie.png
-      - install -Dm644 icons/hicolor/48x48/apps/glyphie.png /app/share/icons/hicolor/48x48/apps/com.aldeastudio.Glyphie.png
-      - install -Dm644 icons/hicolor/32x32/apps/glyphie.png /app/share/icons/hicolor/32x32/apps/com.aldeastudio.Glyphie.png
-      - install -Dm644 icons/hicolor/16x16/apps/glyphie.png /app/share/icons/hicolor/16x16/apps/com.aldeastudio.Glyphie.png
+      - install -Dm644 com.lkbddh.Glyphie.desktop /app/share/applications/com.lkbddh.Glyphie.desktop
+      - install -Dm644 com.lkbddh.Glyphie.metainfo.xml /app/share/metainfo/com.lkbddh.Glyphie.metainfo.xml
+      - install -Dm644 icons/hicolor/scalable/apps/glyphie.svg /app/share/icons/hicolor/scalable/apps/com.lkbddh.Glyphie.svg
+      - install -Dm644 icons/hicolor/128x128/apps/glyphie.png /app/share/icons/hicolor/128x128/apps/com.lkbddh.Glyphie.png
+      - install -Dm644 icons/hicolor/256x256/apps/glyphie.png /app/share/icons/hicolor/256x256/apps/com.lkbddh.Glyphie.png
+      - install -Dm644 icons/hicolor/64x64/apps/glyphie.png /app/share/icons/hicolor/64x64/apps/com.lkbddh.Glyphie.png
+      - install -Dm644 icons/hicolor/48x48/apps/glyphie.png /app/share/icons/hicolor/48x48/apps/com.lkbddh.Glyphie.png
+      - install -Dm644 icons/hicolor/32x32/apps/glyphie.png /app/share/icons/hicolor/32x32/apps/com.lkbddh.Glyphie.png
+      - install -Dm644 icons/hicolor/16x16/apps/glyphie.png /app/share/icons/hicolor/16x16/apps/com.lkbddh.Glyphie.png
       - install -Dm644 README.md /app/share/doc/glyphie/README.md
       - install -Dm644 LICENSE /app/share/doc/glyphie/LICENSE
       - install -Dm644 THIRD_PARTY_NOTICES.md /app/share/doc/glyphie/THIRD_PARTY_NOTICES.md

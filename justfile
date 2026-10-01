@@ -75,6 +75,38 @@ install:
     install -Dm0644 LICENSE "{{doc-dst}}/LICENSE"
     install -Dm0644 THIRD_PARTY_NOTICES.md "{{doc-dst}}/THIRD_PARTY_NOTICES.md"
 
+# Builds a .deb in target/deb from the release binary (run `just build-release` first)
+deb:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    version=$(cargo pkgid | sed 's/.*[#@]//')
+    arch=$(dpkg --print-architecture)
+    pkg={{cargo-target-dir}}/deb/{{name}}_${version}_${arch}
+    rm -rf "$pkg"
+    just rootdir="$pkg" install
+    # dpkg-shlibdeps only runs next to a debian/control, so give it a throwaway one.
+    tmp=$(mktemp -d)
+    trap 'rm -rf "$tmp"' EXIT
+    mkdir "$tmp/debian"
+    printf 'Source: {{name}}\n\nPackage: {{name}}\nArchitecture: any\n' > "$tmp/debian/control"
+    shlibs=$(cd "$tmp" && dpkg-shlibdeps -O "$OLDPWD/$pkg/usr/bin/{{name}}" | sed 's/^shlibs:Depends=//')
+    mkdir -p "$pkg/DEBIAN"
+    cat > "$pkg/DEBIAN/control" <<EOF
+    Package: {{name}}
+    Version: ${version}
+    Architecture: ${arch}
+    Maintainer: lkbddh <204492431+lkbddh@users.noreply.github.com>
+    Installed-Size: $(du -sk "$pkg/usr" | cut -f1)
+    Depends: ${shlibs}, libwayland-client0, wl-clipboard, fonts-noto-color-emoji
+    Recommends: libvulkan1 | libegl1
+    Section: utils
+    Priority: optional
+    Homepage: https://github.com/lkbddh/glyphie
+    Description: Emoji picker for COSMIC
+     Fast libcosmic-native emoji picker with skin tone and gender support.
+    EOF
+    dpkg-deb --root-owner-group --build "$pkg" {{cargo-target-dir}}/deb/
+
 # Uninstalls installed files
 uninstall:
     rm -f {{bin-dst}}

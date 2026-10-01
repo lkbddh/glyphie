@@ -1,0 +1,20 @@
+name: Feature request
+description: Suggest a change to Glyphie.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Glyphie is a quick picker: no online content, no accounts, no telemetry, and it closes after copying. Read [What Glyphie is (and isn't)](https://github.com/lkbddh/glyphie#what-glyphie-is-and-isnt) first.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you are trying to do and what gets in the way. Describe the problem rather than a solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you have in mind
+      description: Optional. How you picture it working.

@@ -98,12 +98,22 @@ To uninstall:
 sudo just uninstall
 ```
 
+### Debian / Ubuntu package
+
+Each [GitHub release](https://github.com/lkbddh/glyphie/releases/latest) also carries a `.deb` for amd64 on Ubuntu 24.04, Pop!_OS 24.04, Debian 13, or newer. `apt` pulls in `wl-clipboard` and the emoji font:
+
+```bash
+sudo apt install ./glyphie_0.3.1_amd64.deb
+```
+
+Remove it with `sudo apt remove glyphie`. To build the package yourself, run `just build-release && just deb`; it lands in `target/deb/`.
+
 ### Flatpak
 
 The quickest path is the prebuilt bundle attached to each [GitHub release](https://github.com/lkbddh/glyphie/releases/latest):
 
 ```bash
-flatpak install --user glyphie-0.3.0.flatpak
+flatpak install --user glyphie-0.3.1.flatpak
 flatpak run com.lkbddh.Glyphie
 ```
 
@@ -169,7 +179,7 @@ flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/fl
 # 2. Download the bundle from the latest release (requires `gh` authenticated)
 gh release download --repo lkbddh/glyphie --pattern '*.flatpak' --dir /tmp --clobber
 # No gh? Use curl with the version-pinned asset name:
-# curl -fL -o /tmp/glyphie-0.3.0.flatpak https://github.com/lkbddh/glyphie/releases/latest/download/glyphie-0.3.0.flatpak
+# curl -fL -o /tmp/glyphie-0.3.1.flatpak https://github.com/lkbddh/glyphie/releases/latest/download/glyphie-0.3.1.flatpak
 
 # 3. Install for the current user (non-interactive)
 flatpak install --user --assumeyes /tmp/glyphie-*.flatpak

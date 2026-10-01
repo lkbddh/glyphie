@@ -30,6 +30,18 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.3.1" date="2026-10-01">
+      <description>
+        <p>New icon, app ID and keyboard fixes</p>
+        <ul>
+          <li>New app icon</li>
+          <li>Arrow keys move straight up and down the emoji grid and keep the highlight in view</li>
+          <li>People holding hands takes the chosen skin tone correctly</li>
+          <li>The app ID is now com.lkbddh.Glyphie, so preferences and recent emojis reset once</li>
+          <li>Now also available as a .deb package</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.0" date="2026-09-16">
       <description>
         <p>Built on libcosmic 1.0</p>

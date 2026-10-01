@@ -104,10 +104,10 @@ The quickest path is the prebuilt bundle attached to each [GitHub release](https
 
 ```bash
 flatpak install --user glyphie-0.3.0.flatpak
-flatpak run com.aldeastudio.Glyphie
+flatpak run com.lkbddh.Glyphie
 ```
 
-To build it yourself, Flatpak installs need `flatpak-builder` and the runtimes/extensions listed in `com.aldeastudio.Glyphie.yml`.
+To build it yourself, Flatpak installs need `flatpak-builder` and the runtimes/extensions listed in `com.lkbddh.Glyphie.yml`.
 
 If `flatpak-builder` reports missing runtimes, install the Freedesktop 26.08 runtime, SDK, and Rust stable extension from Flathub:
 
@@ -124,13 +124,13 @@ python3 flatpak-cargo-generator.py Cargo.lock -o cargo-sources.json
 Build and install locally:
 
 ```bash
-flatpak-builder --user --install --force-clean build-dir com.aldeastudio.Glyphie.yml
+flatpak-builder --user --install --force-clean build-dir com.lkbddh.Glyphie.yml
 ```
 
 Run:
 
 ```bash
-flatpak run com.aldeastudio.Glyphie
+flatpak run com.lkbddh.Glyphie
 ```
 
 ### Development
@@ -149,7 +149,7 @@ Manual launch and clipboard checks are listed in [docs/smoke-test.md](docs/smoke
 
 A self-contained, deterministic recipe for installing Glyphie on a user's machine. Glyphie is a COSMIC/Wayland desktop app: it **builds and installs headlessly**, but **running** it needs a graphical Wayland session.
 
-**Identity:** app id `com.aldeastudio.Glyphie` · binary `glyphie` · config `~/.config/cosmic/com.aldeastudio.Glyphie/` · state `~/.local/state/cosmic/com.aldeastudio.Glyphie/`
+**Identity:** app id `com.lkbddh.Glyphie` · binary `glyphie` · config `~/.config/cosmic/com.lkbddh.Glyphie/` · state `~/.local/state/cosmic/com.lkbddh.Glyphie/`
 
 **Preflight checks:**
 
@@ -175,10 +175,10 @@ gh release download --repo lkbddh/glyphie --pattern '*.flatpak' --dir /tmp --clo
 flatpak install --user --assumeyes /tmp/glyphie-*.flatpak
 
 # 4. Verify (exit code 0 == installed)
-flatpak info com.aldeastudio.Glyphie
+flatpak info com.lkbddh.Glyphie
 
 # Run
-flatpak run com.aldeastudio.Glyphie
+flatpak run com.lkbddh.Glyphie
 ```
 
 ### Option B — Build from source
@@ -203,7 +203,7 @@ command -v glyphie
 
 ### Post-install: bind a global hotkey
 
-Glyphie ships no global hotkey. Bind it in COSMIC: **Settings → Keyboard → Custom Shortcuts** → Command `glyphie` (or `flatpak run com.aldeastudio.Glyphie` for the Flatpak), Shortcut `Super + ;` (COSMIC binds `Super + .` to Zoom In by default).
+Glyphie ships no global hotkey. Bind it in COSMIC: **Settings → Keyboard → Custom Shortcuts** → Command `glyphie` (or `flatpak run com.lkbddh.Glyphie` for the Flatpak), Shortcut `Super + ;` (COSMIC binds `Super + .` to Zoom In by default).
 
 ### Agent notes
 
@@ -222,9 +222,9 @@ For best emoji rendering, install a color emoji font such as `Noto Color Emoji`.
 Glyphie uses `cosmic-config` for all persistent data, split into two stores:
 
 - **Config** (user preferences): skin tone, gender filter, subcategory toggle
-  - `~/.config/cosmic/com.aldeastudio.Glyphie/v1/`
+  - `~/.config/cosmic/com.lkbddh.Glyphie/v1/`
 - **State** (runtime data): recent emojis history
-  - `~/.local/state/cosmic/com.aldeastudio.Glyphie/v1/`
+  - `~/.local/state/cosmic/com.lkbddh.Glyphie/v1/`
 
 Changes are picked up live — editing the config files externally will update the running app.
 

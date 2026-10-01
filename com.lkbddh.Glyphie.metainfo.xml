@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>com.aldeastudio.Glyphie</id>
+  <id>com.lkbddh.Glyphie</id>
   <name>Glyphie</name>
   <summary>Fast libcosmic-native emoji picker with skin tone and gender support</summary>
   <metadata_license>CC0-1.0</metadata_license>
@@ -22,10 +22,10 @@
       <li>Single instance - launching again focuses the running picker</li>
     </ul>
   </description>
-  <launchable type="desktop-id">com.aldeastudio.Glyphie.desktop</launchable>
+  <launchable type="desktop-id">com.lkbddh.Glyphie.desktop</launchable>
   <url type="homepage">https://github.com/lkbddh/glyphie</url>
   <url type="bugtracker">https://github.com/lkbddh/glyphie/issues</url>
-  <developer id="com.aldeastudio">
+  <developer id="com.lkbddh">
     <name>Aldea Studio</name>
   </developer>
   <content_rating type="oars-1.1" />

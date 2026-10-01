@@ -18,5 +18,5 @@ Use this before posting or tagging a release.
 ## Nice to have
 
 - Add a real screenshot at `screenshots/main.png`.
-- Add the screenshot back to `com.aldeastudio.Glyphie.metainfo.xml` once the URL is live.
+- Add the screenshot back to `com.lkbddh.Glyphie.metainfo.xml` once the URL is live.
 - Publish a short install note that says native users need Rust, `just`, `wl-clipboard`, and an emoji font.

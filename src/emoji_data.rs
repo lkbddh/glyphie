@@ -162,6 +162,7 @@ pub fn apply_skin_tone(emoji: &str, skin_tone: SkinTone) -> String {
     }
 
     let modifier = skin_tone.modifier();
+    let in_zwj_sequence = emoji.contains('\u{200D}');
     let mut result = String::with_capacity(emoji.len() + modifier.len() * 4);
     let mut skip_next_variation_selector = false;
 
@@ -185,8 +186,9 @@ pub fn apply_skin_tone(emoji: &str, skin_tone: SkinTone) -> String {
             continue;
         }
 
-        // Apply modifier after human/body emoji base characters
-        if is_human_emoji_base(c) {
+        // Apply modifier after human/body emoji base characters. The 🤝 joining
+        // 🧑‍🤝‍🧑 is never toned itself; only the two people are.
+        if is_human_emoji_base(c) && !(in_zwj_sequence && c == '\u{1F91D}') {
             result.push_str(modifier);
             skip_next_variation_selector = true;
         }
@@ -559,6 +561,15 @@ mod tests {
     fn skin_tone_removes_variation_selector_after_modified_base() {
         assert_eq!(apply_skin_tone("☝️", SkinTone::Light), "☝🏻");
         assert_eq!(apply_skin_tone("⛹️‍♀️", SkinTone::Dark), "⛹🏿‍♀️");
+    }
+
+    #[test]
+    fn skin_tone_leaves_handshake_in_people_holding_hands_untoned() {
+        assert_eq!(
+            apply_skin_tone("🧑\u{200D}🤝\u{200D}🧑", SkinTone::Light),
+            "🧑🏻\u{200D}🤝\u{200D}🧑🏻"
+        );
+        assert_eq!(apply_skin_tone("🤝", SkinTone::Light), "🤝🏻");
     }
 
     #[test]

@@ -2,10 +2,10 @@
 Name=Glyphie
 Comment=Fast emoji picker with skin tone and gender support
 Exec=glyphie
-Icon=com.aldeastudio.Glyphie
+Icon=com.lkbddh.Glyphie
 Terminal=false
 Type=Application
 Categories=Utility;
 Keywords=emoji;emoticon;smiley;face;symbol;picker;glyphie;unicode;
 StartupNotify=true
-StartupWMClass=com.aldeastudio.Glyphie
+StartupWMClass=com.lkbddh.Glyphie

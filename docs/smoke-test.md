@@ -15,6 +15,6 @@ Run these checks after changes that touch launch, clipboard, search, or keyboard
 ## Flatpak
 
 1. Regenerate `cargo-sources.json` if dependencies changed.
-2. Build and install with `flatpak-builder --user --install --force-clean build-dir com.aldeastudio.Glyphie.yml`.
-3. Run with `flatpak run com.aldeastudio.Glyphie`.
+2. Build and install with `flatpak-builder --user --install --force-clean build-dir com.lkbddh.Glyphie.yml`.
+3. Run with `flatpak run com.lkbddh.Glyphie`.
 4. Repeat the native clipboard, single-instance, multiselect, and persistence checks.

@@ -34,10 +34,12 @@ pub fn text_muted() -> cosmic::theme::Text {
     })
 }
 
-// Grid (u16 required by flex_row API)
-pub const GRID_SPACING: u16 = 2;
+// Grid
+pub const GRID_SPACING: f32 = 2.0;
 pub const KEYBOARD_GRID_COLUMNS: usize = 6;
-pub const KEYBOARD_GRID_COLUMNS_DELTA: isize = 6;
+/// Fixed line height of subcategory headers, so keyboard scrolling can compute
+/// row positions (`picker_state::row_top`).
+pub const SUBCATEGORY_HEADER_HEIGHT: f32 = 16.0;
 
 // Selection tray
 pub const MAX_SELECTION: usize = 20;

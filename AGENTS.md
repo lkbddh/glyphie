@@ -42,7 +42,7 @@ Flatpak: `flatpak-builder --user --install --force-clean build-dir com.lkbddh.Gl
 
 **Skin tones** are applied only at display time (`get_display_emoji` → `apply_skin_tone`). Recents store the base glyph with modifiers stripped, and Recent is rebuilt by exact glyph match against `EMOJIS`.
 
-**Config (`src/config.rs`)**: uses `cosmic-config` with two stores. `GlyphieConfig` holds preferences under `~/.config/cosmic/com.lkbddh.Glyphie/v1/`. `GlyphieState` holds recent emojis under `~/.local/state/cosmic/com.lkbddh.Glyphie/v1/`. Mutate `self.config` or `self.state`, then call `save_config()` or `save_state()`. Changes made outside the app arrive as `ConfigChanged` or `StateChanged` through subscriptions. `CosmicConfigEntry` requires every field to be `Eq`. `docs/RFC-001-migrate-to-cosmic-config.md` covers the design.
+**Config (`src/config.rs`)**: uses `cosmic-config` with two stores. `GlyphieConfig` holds preferences under `~/.config/cosmic/com.lkbddh.Glyphie/v1/`. `GlyphieState` holds recent emojis under `~/.local/state/cosmic/com.lkbddh.Glyphie/v1/`. Mutate `self.config` or `self.state`, then call `save_config()` or `save_state()`. Changes made outside the app arrive as `ConfigChanged` or `StateChanged` through subscriptions. `CosmicConfigEntry` requires every field to be `Eq`.
 
 **Clipboard (`src/clipboard.rs`)**: copies by piping to the `wl-copy` subprocess, so the clipboard contents survive after the app exits. If `wl-copy` fails, the code falls back to iced's clipboard and does **not** close the window, because that clipboard dies with the process.
 

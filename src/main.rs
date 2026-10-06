@@ -161,6 +161,7 @@ pub(crate) enum Message {
     ClearRejectedSelection,
     ConfigChanged(GlyphieConfig),
     StateChanged(GlyphieState),
+    WindowOpened(window::Id),
     CloseRequested,
 }
 
@@ -231,10 +232,7 @@ impl Application for CosmicEmojiPicker {
             Some(id) => app.set_window_title("Glyphie".into(), id),
             None => Task::none(),
         };
-        (
-            app,
-            Task::batch([set_title, text_input::focus(SEARCH_INPUT_ID.clone())]),
-        )
+        (app, set_title)
     }
 
     fn header_start(&self) -> Vec<Element<'_, Self::Message>> {
@@ -481,6 +479,11 @@ impl Application for CosmicEmojiPicker {
                     self.refresh_cache();
                 }
             }
+            // Focusing from init() is lost: the window isn't open yet, so no widget receives it.
+            Message::WindowOpened(id) if Some(id) == self.core.main_window_id() => {
+                return text_input::focus(SEARCH_INPUT_ID.clone());
+            }
+            Message::WindowOpened(_) => {}
             Message::CloseRequested => {
                 return Self::close_picker();
             }
@@ -511,6 +514,7 @@ impl Application for CosmicEmojiPicker {
 
         Subscription::batch([
             keyboard,
+            window::open_events().map(Message::WindowOpened),
             GlyphieConfig::subscription().map(|update| Message::ConfigChanged(update.config)),
             GlyphieState::subscription().map(|update| Message::StateChanged(update.config)),
         ])

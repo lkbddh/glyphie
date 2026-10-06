@@ -30,6 +30,14 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.3.2" date="2026-10-06">
+      <description>
+        <p>Type to search straight away</p>
+        <ul>
+          <li>The search bar has focus as soon as the picker opens</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.1" date="2026-10-01">
       <description>
         <p>New icon, app ID and keyboard fixes</p>

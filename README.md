@@ -207,7 +207,7 @@ Emoji data is embedded from `data/emojis.json` at compile time (no network acces
 
 ## Security
 
-Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md).
+Report vulnerabilities privately through [Report a vulnerability](https://github.com/lkbddh/glyphie/security/advisories/new), not in a public issue.
 
 ### Dependency Auditing
 

@@ -2,7 +2,7 @@
 
 Thanks for helping. Glyphie is a small, fast emoji picker for COSMIC, so it takes changes that keep it small and fast. Read [What Glyphie is (and isn't)](README.md#what-glyphie-is-and-isnt) before proposing a feature.
 
-Everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md). Report security problems privately as described in [SECURITY.md](SECURITY.md), not in an issue.
+Report security problems privately through [Report a vulnerability](https://github.com/lkbddh/glyphie/security/advisories/new), not in a public issue.
 
 If you are an AI coding agent, or you are directing one, read [AGENTS.md](AGENTS.md) as well. It has the same rules plus what an agent needs to work in this codebase.
 

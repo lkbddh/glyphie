@@ -158,6 +158,7 @@ pub(crate) enum Message {
     CopySelectedEmojis,
     ToggleSettingsMenu,
     ApplySearch,
+    ClearSearch,
     ClearRejectedSelection,
     ConfigChanged(GlyphieConfig),
     StateChanged(GlyphieState),
@@ -251,12 +252,26 @@ impl Application for CosmicEmojiPicker {
             cosmic::theme::Button::HeaderBar
         });
 
-        vec![widget::tooltip(
+        let mut widgets = vec![widget::tooltip(
             menu_btn,
             widget::text(menu_label),
             widget::tooltip::Position::Bottom,
         )
-        .into()]
+        .into()];
+
+        if !self.show_settings_menu {
+            widgets.push(
+                text_input::search_input(fl!("search-placeholder"), self.search_text())
+                    .id(SEARCH_INPUT_ID.clone())
+                    .on_input(Message::SearchChanged)
+                    .on_submit(|_| Message::CopyActiveEmoji)
+                    .on_clear(Message::ClearSearch)
+                    .width(Length::Fill)
+                    .into(),
+            );
+        }
+
+        widgets
     }
 
     fn header_end(&self) -> Vec<Element<'_, Self::Message>> {
@@ -294,19 +309,6 @@ impl Application for CosmicEmojiPicker {
             return self.view_settings_menu();
         }
 
-        let display_query = self.pending_search.as_ref().unwrap_or(&self.search_query);
-        let search_row: Element<Message> = container(
-            text_input(fl!("search-placeholder"), display_query)
-                .id(SEARCH_INPUT_ID.clone())
-                .on_input(Message::SearchChanged)
-                .on_submit(|_| Message::CopyActiveEmoji)
-                .width(Length::Fill)
-                .padding(SPACING_SM),
-        )
-        .padding([0.0, 0.0, SPACING_XS, 0.0])
-        .width(Length::Fill)
-        .into();
-
         let category_bar = self.view_category_bar();
         let skin_tone_bar = self.view_skin_tone_bar(emoji_count);
         let emoji_content = self.view_emoji_content();
@@ -322,9 +324,7 @@ impl Application for CosmicEmojiPicker {
         .height(Length::Fill)
         .class(cosmic::theme::Container::Card);
 
-        let mut content = widget::Column::new().push(search_row);
-
-        content = content.push(category_bar).push(emoji_card);
+        let mut content = widget::Column::new().push(category_bar).push(emoji_card);
 
         if let Some(tray) = selection_tray {
             content = content.push(tray);
@@ -392,15 +392,14 @@ impl Application for CosmicEmojiPicker {
                     } else if self.show_preferences {
                         self.show_preferences = false;
                     } else if self.pending_search.is_some() || !self.search_query.is_empty() {
-                        self.search_query.clear();
-                        self.pending_search = None;
-                        self.search_debounce = None;
-                        self.refresh_cache();
+                        self.clear_search();
                     } else if !self.selected_indices.is_empty() {
                         self.selected_indices.clear();
                     } else {
                         return Self::close_picker();
                     }
+                    // The search field drops focus on Esc; take it back so typing still searches.
+                    return text_input::focus(SEARCH_INPUT_ID.clone());
                 }
                 Key::Named(Named::Enter) if !captured => {
                     return self.copy_active_emoji();
@@ -411,10 +410,11 @@ impl Application for CosmicEmojiPicker {
                 Key::Named(Named::ArrowUp) => {
                     return self.move_highlight(-1, true);
                 }
-                Key::Named(Named::ArrowRight) if !captured => {
+                // An empty search field has no text to move through, so the grid gets ←/→.
+                Key::Named(Named::ArrowRight) if !captured || self.search_text().is_empty() => {
                     return self.move_highlight(1, false);
                 }
-                Key::Named(Named::ArrowLeft) if !captured => {
+                Key::Named(Named::ArrowLeft) if !captured || self.search_text().is_empty() => {
                     return self.move_highlight(-1, false);
                 }
                 _ if COPY_SHORTCUT.matches(modifiers, &key, Some(&physical_key)) => {
@@ -455,6 +455,9 @@ impl Application for CosmicEmojiPicker {
             }
             Message::ToggleSettingsMenu => {
                 self.show_settings_menu = !self.show_settings_menu;
+                if !self.show_settings_menu {
+                    return text_input::focus(SEARCH_INPUT_ID.clone());
+                }
             }
             Message::ApplySearch => {
                 if let Some(query) = self.pending_search.take() {
@@ -462,6 +465,10 @@ impl Application for CosmicEmojiPicker {
                     self.refresh_cache();
                     self.highlight_first_result_if_searching();
                 }
+            }
+            Message::ClearSearch => {
+                self.clear_search();
+                return text_input::focus(SEARCH_INPUT_ID.clone());
             }
             Message::ClearRejectedSelection => {
                 self.selection_rejected_idx = None;
@@ -529,6 +536,8 @@ impl Application for CosmicEmojiPicker {
     }
 
     fn dbus_activation(&mut self, _msg: cosmic::dbus_activation::Message) -> Task<Self::Message> {
+        // The search field is hidden behind the settings menu, so close it before focusing.
+        self.show_settings_menu = false;
         self.focus_picker()
     }
 }
@@ -557,6 +566,18 @@ impl CosmicEmojiPicker {
             window::request_user_attention(id, Some(UserAttention::Informational)),
             focus_input,
         ])
+    }
+
+    /// The text shown in the search field, including input still waiting on the debounce.
+    fn search_text(&self) -> &str {
+        self.pending_search.as_ref().unwrap_or(&self.search_query)
+    }
+
+    fn clear_search(&mut self) {
+        self.search_query.clear();
+        self.pending_search = None;
+        self.search_debounce = None;
+        self.refresh_cache();
     }
 
     fn copy_single_emoji(&mut self, idx: usize) -> Task<Message> {

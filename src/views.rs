@@ -52,8 +52,14 @@ impl CosmicEmojiPicker {
             row = row.push(btn_with_tooltip);
         }
 
+        // The header bar pads 8px below its controls (4px when Compact). Top it up so the gap
+        // above the category bar matches the SPACING_SM gap below it.
+        let top = match cosmic::config::header_size() {
+            cosmic::cosmic_theme::Density::Compact => SPACING_SM - 4.0,
+            _ => 0.0,
+        };
         container(row.align_y(Alignment::Center))
-            .padding([SPACING_SM, 0.0])
+            .padding([top, 0.0, SPACING_SM, 0.0])
             .width(Length::Fill)
             .into()
     }

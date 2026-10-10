@@ -30,6 +30,16 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.3.3" date="2026-10-09">
+      <description>
+        <p>Search from the header bar</p>
+        <ul>
+          <li>The search field sits in the header bar, as in COSMIC Settings</li>
+          <li>Esc keeps the cursor in the search field</li>
+          <li>Left and Right move through emojis when the search is empty</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.2" date="2026-10-06">
       <description>
         <p>Type to search straight away</p>

@@ -11,6 +11,7 @@ For binary or Flatpak distribution, ship this file together with `LICENSE`.
 | Project | Used for | License | Source |
 |---|---|---|---|
 | Unicode CLDR / Unicode Emoji data | Emoji names, categories, and search keywords in `data/emojis.json` | Unicode-3.0 | https://unicode.org/ |
+| Noto Color Emoji 2.057, Copyright 2022 Google Inc. | Emoji font embedded in the binary from `assets/fonts/NotoColorEmoji.ttf` | OFL-1.1 | https://github.com/googlefonts/noto-emoji |
 | Phosphor Icons | SVG category and action icons under `assets/` | MIT | https://phosphoricons.com/ |
 | wl-clipboard | `wl-copy` / `wl-paste` bundled by the Flatpak manifest | GPL-3.0-or-later | https://github.com/bugaevc/wl-clipboard |
 

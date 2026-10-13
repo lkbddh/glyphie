@@ -17,7 +17,7 @@ It's built for the "one emoji, right now" moment: open, search, click to copy, k
 
 ## Features
 
-- Fast search with trigram-indexed lookup across all Unicode 16.0 emojis by name and keywords
+- Fast search with trigram-indexed lookup across all Unicode 18.0 emojis by name and keywords
 - Starts in **Recent** for quick repeat picks
 - 10 categories including a persistent **Recent** category
 - Recent emojis history (up to 36)
@@ -61,7 +61,7 @@ Glyphie runs on Linux desktops with COSMIC or another Wayland session. Download 
 The `.deb` is for amd64 on Ubuntu 24.04, Pop!_OS 24.04, Debian 13, or newer. `apt` pulls in `wl-clipboard` and the emoji font:
 
 ```bash
-sudo apt install ./glyphie_0.3.4_amd64.deb
+sudo apt install ./glyphie_0.4.0_amd64.deb
 ```
 
 Remove it with `sudo apt remove glyphie`.
@@ -69,7 +69,7 @@ Remove it with `sudo apt remove glyphie`.
 ### Flatpak, any distribution
 
 ```bash
-flatpak install --user glyphie-0.3.4.flatpak
+flatpak install --user glyphie-0.4.0.flatpak
 flatpak run com.lkbddh.Glyphie
 ```
 
@@ -77,7 +77,7 @@ The Freedesktop runtime comes from Flathub automatically. `wl-copy` is bundled.
 
 ### From source
 
-You need Rust 1.93 or newer, [`just`](https://github.com/casey/just), `wl-clipboard`, and a color emoji font such as Noto Color Emoji. On Pop!_OS and Ubuntu:
+You need Rust 1.93 or newer, [`just`](https://github.com/casey/just), and `wl-clipboard`. A system color emoji font is optional: Glyphie brings its own, and the line below installs one for the apps you paste into. On Pop!_OS and Ubuntu:
 
 ```bash
 sudo apt install build-essential git pkg-config libdrm-dev libwayland-dev libxkbcommon-dev wl-clipboard fonts-noto-color-emoji
@@ -145,7 +145,7 @@ flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/fl
 # 2. Download the bundle from the latest release (requires `gh` authenticated)
 gh release download --repo lkbddh/glyphie --pattern '*.flatpak' --dir /tmp --clobber
 # No gh? Use curl with the version-pinned asset name:
-# curl -fL -o /tmp/glyphie-0.3.4.flatpak https://github.com/lkbddh/glyphie/releases/latest/download/glyphie-0.3.4.flatpak
+# curl -fL -o /tmp/glyphie-0.4.0.flatpak https://github.com/lkbddh/glyphie/releases/latest/download/glyphie-0.4.0.flatpak
 
 # 3. Install for the current user (non-interactive)
 flatpak install --user --assumeyes /tmp/glyphie-*.flatpak
@@ -191,7 +191,7 @@ Glyphie ships no global hotkey. Bind it in COSMIC: **Settings → Keyboard → C
 
 Glyphie uses `wl-copy` from `wl-clipboard` so copied emojis remain available after the picker exits. The Flatpak bundles `wl-copy`; native source installs should install `wl-clipboard`.
 
-For best emoji rendering, install a color emoji font such as `Noto Color Emoji`.
+Glyphie draws emojis with a bundled copy of Noto Color Emoji, so the picker shows every emoji whichever emoji font the system has. Apps that draw with the system emoji font can show the newest emojis as blanks until that font is updated.
 
 ## Configuration & state
 

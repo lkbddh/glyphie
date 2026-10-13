@@ -45,6 +45,7 @@ no-recent-emojis = No recent emojis
 recent-hint = Emojis you select will appear here
 no-emojis = No emojis
 category-empty = This category is empty
+gender-filter-hint = The gender filter is on and hides some emojis
 emoji-data-error = Failed to load emoji data
 emoji-data-error-hint = The embedded emoji database could not be parsed
 

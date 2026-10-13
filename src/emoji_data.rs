@@ -16,21 +16,57 @@ pub struct Emoji {
     pub subcategory: Option<String>,
     #[serde(rename = "st")]
     pub search_text: String,
-    /// Pre-computed gender (0=neutral, 1=feminine, 2=masculine). Absent means neutral.
-    #[serde(rename = "g", default)]
-    pub gender_code: u8,
 }
 
 impl Emoji {
-    /// Get pre-computed gender from JSON data
-    #[inline]
-    pub const fn gender(&self) -> Gender {
-        match self.gender_code {
-            1 => Gender::Feminine,
-            2 => Gender::Masculine,
+    /// The gender a People & Body emoji shows, read from its characters.
+    /// Groups that mix both are neutral.
+    pub fn gender(&self) -> Gender {
+        if self.category != EmojiCategory::PeopleBody {
+            return Gender::Neutral;
+        }
+        let feminine = self.glyph.chars().any(is_feminine);
+        let masculine = self.glyph.chars().any(is_masculine);
+        match (feminine, masculine) {
+            (true, false) => Gender::Feminine,
+            (false, true) => Gender::Masculine,
             _ => Gender::Neutral,
         }
     }
+}
+
+// The ♀ and ♂ signs that gender a ZWJ sequence, plus the people Unicode lists
+// under "Emoji With Explicit Gender Appearance" (UTS #51).
+fn is_feminine(c: char) -> bool {
+    matches!(
+        c,
+        '\u{2640}'        // ♀ female sign
+            | '\u{1F467}' // 👧 girl
+            | '\u{1F469}' // 👩 woman
+            | '\u{1F46D}' // 👭 women holding hands
+            | '\u{1F475}' // 👵 old woman
+            | '\u{1F478}' // 👸 princess
+            | '\u{1F483}' // 💃 woman dancing
+            | '\u{1F930}' // 🤰 pregnant woman
+            | '\u{1F931}' // 🤱 breast-feeding
+            | '\u{1F936}' // 🤶 Mrs. Claus
+            | '\u{1F9D5}' // 🧕 woman with headscarf
+    )
+}
+
+fn is_masculine(c: char) -> bool {
+    matches!(
+        c,
+        '\u{2642}'        // ♂ male sign
+            | '\u{1F385}' // 🎅 Santa Claus
+            | '\u{1F466}' // 👦 boy
+            | '\u{1F468}' // 👨 man
+            | '\u{1F46C}' // 👬 men holding hands
+            | '\u{1F474}' // 👴 old man
+            | '\u{1F57A}' // 🕺 man dancing
+            | '\u{1F934}' // 🤴 prince
+            | '\u{1FAC3}' // 🫃 pregnant man
+    )
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
@@ -198,7 +234,8 @@ pub fn apply_skin_tone(emoji: &str, skin_tone: SkinTone) -> String {
 }
 
 /// Check if a character is a Unicode `Emoji_Modifier_Base` that accepts skin tone modifiers.
-/// Matches the complete Unicode 15.1 `Emoji_Modifier_Base` property.
+/// Matches the Unicode 18.0 `Emoji_Modifier_Base` property, except 🫹 and 🫺
+/// (U+1FAF9, U+1FAFA): the bundled font has no toned forms for them yet.
 #[inline]
 fn is_human_emoji_base(c: char) -> bool {
     matches!(c,
@@ -233,7 +270,7 @@ fn is_human_emoji_base(c: char) -> bool {
         '\u{1F918}'..='\u{1F91F}' | // 🤘–🤟 horn sign..love-you
         '\u{1F926}' |               // 🤦 facepalm
         '\u{1F930}'..='\u{1F939}' | // 🤰–🤹 pregnant..juggling
-        '\u{1F93D}'..='\u{1F93E}' | // 🤽🤾 water polo, handball
+        '\u{1F93C}'..='\u{1F93E}' | // 🤼–🤾 wrestling, water polo, handball
         '\u{1F977}' |               // 🥷 ninja
         '\u{1F9B5}'..='\u{1F9B6}' | // 🦵🦶 leg, foot
         '\u{1F9B8}'..='\u{1F9B9}' | // 🦸🦹 superhero, villain
@@ -328,7 +365,6 @@ pub static EMOJIS_BY_CATEGORY: LazyLock<HashMap<EmojiCategory, Vec<usize>>> = La
     map
 });
 
-/// Fast gender lookup - now uses pre-computed field directly
 #[inline]
 pub fn get_emoji_gender(idx: usize) -> Gender {
     EMOJIS.get(idx).map_or(Gender::Neutral, Emoji::gender)
@@ -553,6 +589,27 @@ mod tests {
     }
 
     #[test]
+    fn search_finds_unicode_17_and_18_emojis() {
+        for (query, glyph) in [("orca", "🫍"), ("pickle", "🫝")] {
+            let results = search_emojis(query);
+
+            assert_eq!(
+                results.first().map(|&idx| EMOJIS[idx].glyph.as_str()),
+                Some(glyph)
+            );
+        }
+    }
+
+    #[test]
+    fn skin_tone_applies_to_wrestlers_and_bunny_ears() {
+        assert_eq!(apply_skin_tone("🤼", SkinTone::Light), "🤼🏻");
+        assert_eq!(
+            apply_skin_tone("👯\u{200D}♀\u{FE0F}", SkinTone::Dark),
+            "👯🏿\u{200D}♀\u{FE0F}"
+        );
+    }
+
+    #[test]
     fn skin_tone_replaces_existing_modifier() {
         assert_eq!(apply_skin_tone("👋🏽", SkinTone::Light), "👋🏻");
     }
@@ -570,6 +627,46 @@ mod tests {
             "🧑🏻\u{200D}🤝\u{200D}🧑🏻"
         );
         assert_eq!(apply_skin_tone("🤝", SkinTone::Light), "🤝🏻");
+    }
+
+    #[test]
+    fn gender_follows_the_characters_in_the_emoji() {
+        let gender = |name: &str| {
+            EMOJIS
+                .iter()
+                .find(|emoji| emoji.name == name)
+                .map(Emoji::gender)
+        };
+
+        for name in [
+            "woman walking",
+            "princess",
+            "mermaid",
+            "woman in manual wheelchair",
+            "Mrs. Claus",
+        ] {
+            assert_eq!(gender(name), Some(Gender::Feminine), "{name}");
+        }
+        for name in [
+            "man walking",
+            "prince",
+            "merman",
+            "pregnant man",
+            "Santa Claus",
+        ] {
+            assert_eq!(gender(name), Some(Gender::Masculine), "{name}");
+        }
+        // Mixed groups, people with no gendered form, and the ♀ sign on its own.
+        for name in [
+            "speaking head",
+            "person walking",
+            "woman and man holding hands",
+            "family: man, girl",
+            "person in tuxedo",
+            "female sign",
+        ] {
+            assert_eq!(gender(name), Some(Gender::Neutral), "{name}");
+        }
     }
 
     #[test]

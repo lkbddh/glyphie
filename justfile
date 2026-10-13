@@ -74,6 +74,7 @@ install:
     install -Dm0644 README.md "{{doc-dst}}/README.md"
     install -Dm0644 LICENSE "{{doc-dst}}/LICENSE"
     install -Dm0644 THIRD_PARTY_NOTICES.md "{{doc-dst}}/THIRD_PARTY_NOTICES.md"
+    install -Dm0644 assets/fonts/LICENSE "{{doc-dst}}/LICENSE.NotoColorEmoji"
 
 # Builds a .deb in target/deb from the release binary (run `just build-release` first)
 deb:
@@ -97,8 +98,8 @@ deb:
     Architecture: ${arch}
     Maintainer: lkbddh <204492431+lkbddh@users.noreply.github.com>
     Installed-Size: $(du -sk "$pkg/usr" | cut -f1)
-    Depends: ${shlibs}, libwayland-client0, wl-clipboard, fonts-noto-color-emoji
-    Recommends: libvulkan1 | libegl1
+    Depends: ${shlibs}, libwayland-client0, wl-clipboard
+    Recommends: libvulkan1 | libegl1, fonts-noto-color-emoji
     Section: utils
     Priority: optional
     Homepage: https://github.com/lkbddh/glyphie
@@ -119,3 +120,4 @@ uninstall:
     rm -f "{{doc-dst}}/README.md"
     rm -f "{{doc-dst}}/LICENSE"
     rm -f "{{doc-dst}}/THIRD_PARTY_NOTICES.md"
+    rm -f "{{doc-dst}}/LICENSE.NotoColorEmoji"

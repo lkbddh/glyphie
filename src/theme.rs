@@ -1,7 +1,7 @@
 use cosmic::iced::Color;
 
-// Noto Color Emoji provides comprehensive Unicode emoji coverage
-pub const EMOJI_FONT: cosmic::iced::Font = cosmic::iced::Font::with_name("Noto Color Emoji");
+// The bundled Noto Color Emoji, which covers everything in `data/emojis.json`
+pub const EMOJI_FONT: cosmic::iced::Font = cosmic::iced::Font::with_name(crate::emoji_font::FAMILY);
 
 // UI element sizes
 pub const SKIN_TONE_CIRCLE_SIZE: f32 = 18.0;

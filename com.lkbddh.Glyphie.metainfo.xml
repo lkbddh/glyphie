@@ -30,6 +30,16 @@
   </developer>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.3.5" date="2026-10-12">
+      <description>
+        <p>Unicode 18 emojis and a working gender filter</p>
+        <ul>
+          <li>All Unicode 17 and 18 emojis, drawn with a bundled emoji font so they show on every system</li>
+          <li>Skin tones for people with bunny ears and people wrestling</li>
+          <li>The Female and Male filters now hide the other gender's emojis</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.3.4" date="2026-10-12">
       <description>
         <p>Arrow keys while searching</p>

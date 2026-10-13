@@ -8,9 +8,11 @@ Run these checks after changes that touch launch, clipboard, search, or keyboard
 2. Build and run with `just run`.
 3. Confirm the picker opens on **Recent** and the search field is focused.
 4. Type `grinning face`, press `Enter`, then paste into another app and confirm `😀` was copied.
-5. Start `glyphie` again while it is already open and confirm the existing picker is focused instead of opening a second window.
-6. Enable multiselect, select two emojis, press `Enter`, then paste and confirm both emojis were copied in selection order.
-7. Change skin tone and gender filter, close and reopen, and confirm the preferences persisted.
+5. Reopen, turn Caps Lock on, type `happy`, press `→` twice, then `Enter`, and confirm the third result was copied. Turn Caps Lock off.
+6. Reopen, type `happy`, press `←`, type `x`, and confirm the field reads `happyx`.
+7. Start `glyphie` again while it is already open and confirm the existing picker is focused instead of opening a second window.
+8. Enable multiselect, select two emojis, press `Enter`, then paste and confirm both emojis were copied in selection order.
+9. Change skin tone and gender filter, close and reopen, and confirm the preferences persisted.
 
 ## Flatpak
 

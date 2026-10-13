@@ -39,7 +39,8 @@ It's built for the "one emoji, right now" moment: open, search, click to copy, k
 | `Enter` | Copy the highlighted emoji, first search result, or selected emojis |
 | `Ctrl + C` | Copy the highlighted emoji or selected emojis |
 | `↑` / `↓` | Move highlighted emoji by row |
-| `←` / `→` | Move highlighted emoji by item when the search field is empty or not focused |
+| `←` / `→` | Move highlighted emoji by item, also while typing a search |
+| `Ctrl` / `Shift` + `←` / `→` | Move or select through the search text |
 
 ## Recommended workflow: recreate `Win + .` on COSMIC
 

@@ -1,4 +1,5 @@
 use crate::theme::{EMOJI_BUTTON_SIZE, GRID_SPACING, SPACING_SM, SUBCATEGORY_HEADER_HEIGHT};
+use cosmic::iced::keyboard::Modifiers;
 
 /// One visual row of the emoji grid: positions `start..start + len` of
 /// `cached_indices`, inside subcategory group `group`.
@@ -76,6 +77,12 @@ pub(crate) fn active_copy_index(
         .or_else(|| cached_indices.first().copied())
 }
 
+/// Whether ←/→ walk the grid. The focused search field captures them to move
+/// its caret, so only a Shift or Ctrl press (selection, word jump) stays with the text.
+pub(crate) fn arrows_walk_grid(captured: bool, modifiers: Modifiers) -> bool {
+    !(captured && modifiers.intersects(Modifiers::SHIFT | Modifiers::CTRL))
+}
+
 pub(crate) fn next_highlight_position(
     len: usize,
     current_pos: Option<usize>,
@@ -118,6 +125,20 @@ mod tests {
     #[test]
     fn active_copy_returns_none_when_empty() {
         assert_eq!(active_copy_index(Some(9), &[]), None);
+    }
+
+    #[test]
+    fn plain_arrows_walk_the_grid_while_typing() {
+        // Search text typed, field focused, → pressed.
+        assert!(arrows_walk_grid(true, Modifiers::empty()));
+        // Wayland reports Caps Lock as a modifier.
+        assert!(arrows_walk_grid(true, Modifiers::CAPS_LOCK));
+        assert!(arrows_walk_grid(false, Modifiers::SHIFT));
+        assert!(!arrows_walk_grid(true, Modifiers::SHIFT));
+        assert!(!arrows_walk_grid(
+            true,
+            Modifiers::CTRL | Modifiers::CAPS_LOCK
+        ));
     }
 
     #[test]

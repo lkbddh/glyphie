@@ -32,8 +32,8 @@ use emoji_data::{
     SkinTone, EMOJIS, EMOJIS_BY_CATEGORY,
 };
 use picker_state::{
-    active_copy_index, grid_rows, next_highlight_position, row_top, vertical_highlight_position,
-    GridRow,
+    active_copy_index, arrows_walk_grid, grid_rows, next_highlight_position, row_top,
+    vertical_highlight_position, GridRow,
 };
 use theme::{
     EMOJI_BUTTON_SIZE, HEADER_BUTTON_PADDING, HEADER_ICON_SIZE, KEYBOARD_GRID_COLUMNS,
@@ -410,12 +410,18 @@ impl Application for CosmicEmojiPicker {
                 Key::Named(Named::ArrowUp) => {
                     return self.move_highlight(-1, true);
                 }
-                // An empty search field has no text to move through, so the grid gets ←/→.
-                Key::Named(Named::ArrowRight) if !captured || self.search_text().is_empty() => {
-                    return self.move_highlight(1, false);
-                }
-                Key::Named(Named::ArrowLeft) if !captured || self.search_text().is_empty() => {
-                    return self.move_highlight(-1, false);
+                // The search field has already moved its caret on ←/→; put it back at the
+                // end so the next keystroke still appends.
+                // ponytail: the reset runs one update late, so a key in the same event batch
+                // as ← lands mid-text. Closing that needs a field that ignores plain arrows.
+                Key::Named(named @ (Named::ArrowLeft | Named::ArrowRight))
+                    if arrows_walk_grid(captured, modifiers) =>
+                {
+                    let delta = if named == Named::ArrowRight { 1 } else { -1 };
+                    return Task::batch([
+                        self.move_highlight(delta, false),
+                        text_input::move_cursor_to_end(SEARCH_INPUT_ID.clone()),
+                    ]);
                 }
                 _ if COPY_SHORTCUT.matches(modifiers, &key, Some(&physical_key)) => {
                     return self.copy_active_emoji();

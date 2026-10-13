@@ -374,7 +374,16 @@ impl Application for CosmicEmojiPicker {
             Message::SelectGenderFilter(filter) => {
                 self.config.gender_filter = filter;
                 self.save_config();
+                let highlighted = self.highlighted_index;
                 self.refresh_cache();
+                // The filter hid the highlighted emoji and the highlight moved to the
+                // first result, so bring that into view.
+                if self.highlighted_index != highlighted {
+                    return widget_operation::snap_to(
+                        EMOJI_SCROLLABLE_ID.clone(),
+                        RelativeOffset::START,
+                    );
+                }
             }
             Message::TogglePreferences => {
                 self.show_preferences = !self.show_preferences;

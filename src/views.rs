@@ -396,6 +396,14 @@ impl CosmicEmojiPicker {
             } else {
                 ("📭", fl!("no-emojis"), fl!("category-empty"))
             };
+            // An empty grid under a gender filter may only be the filter at work.
+            let filter_hint = (emoji_data_loaded()
+                && self.config.gender_filter != GenderFilter::All)
+                .then(|| {
+                    widget::text(fl!("gender-filter-hint"))
+                        .size(FONT_SIZE_SM)
+                        .class(text_muted())
+                });
             return container(
                 widget::Column::new()
                     .push(widget::text(icon).size(FONT_SIZE_EMPTY_ICON))
@@ -406,6 +414,7 @@ impl CosmicEmojiPicker {
                             .size(FONT_SIZE_SM)
                             .class(text_muted()),
                     )
+                    .push_maybe(filter_hint)
                     .spacing(SPACING_XS)
                     .align_x(Alignment::Center),
             )

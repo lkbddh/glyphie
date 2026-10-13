@@ -53,6 +53,7 @@ modules:
       - install -Dm644 README.md /app/share/doc/glyphie/README.md
       - install -Dm644 LICENSE /app/share/doc/glyphie/LICENSE
       - install -Dm644 THIRD_PARTY_NOTICES.md /app/share/doc/glyphie/THIRD_PARTY_NOTICES.md
+      - install -Dm644 assets/fonts/LICENSE /app/share/doc/glyphie/LICENSE.NotoColorEmoji
     sources:
       - type: dir
         path: .

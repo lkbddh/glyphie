@@ -5,6 +5,7 @@ mod localize;
 mod clipboard;
 mod config;
 mod emoji_data;
+mod emoji_font;
 mod picker_state;
 mod theme;
 mod views;
@@ -205,6 +206,8 @@ impl Application for CosmicEmojiPicker {
     fn init(mut core: Core, _flags: Self::Flags) -> (Self, Task<Self::Message>) {
         core.window.show_minimize = false;
         core.window.show_maximize = false;
+
+        emoji_font::register();
 
         let (config_handler, config) = GlyphieConfig::load();
         let (state_handler, state) = GlyphieState::load();

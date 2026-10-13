@@ -198,7 +198,8 @@ pub fn apply_skin_tone(emoji: &str, skin_tone: SkinTone) -> String {
 }
 
 /// Check if a character is a Unicode `Emoji_Modifier_Base` that accepts skin tone modifiers.
-/// Matches the complete Unicode 15.1 `Emoji_Modifier_Base` property.
+/// Matches the Unicode 18.0 `Emoji_Modifier_Base` property, except 🫹 and 🫺
+/// (U+1FAF9, U+1FAFA): the bundled font has no toned forms for them yet.
 #[inline]
 fn is_human_emoji_base(c: char) -> bool {
     matches!(c,
@@ -233,7 +234,7 @@ fn is_human_emoji_base(c: char) -> bool {
         '\u{1F918}'..='\u{1F91F}' | // 🤘–🤟 horn sign..love-you
         '\u{1F926}' |               // 🤦 facepalm
         '\u{1F930}'..='\u{1F939}' | // 🤰–🤹 pregnant..juggling
-        '\u{1F93D}'..='\u{1F93E}' | // 🤽🤾 water polo, handball
+        '\u{1F93C}'..='\u{1F93E}' | // 🤼–🤾 wrestling, water polo, handball
         '\u{1F977}' |               // 🥷 ninja
         '\u{1F9B5}'..='\u{1F9B6}' | // 🦵🦶 leg, foot
         '\u{1F9B8}'..='\u{1F9B9}' | // 🦸🦹 superhero, villain
@@ -549,6 +550,27 @@ mod tests {
         assert_eq!(
             results.first().map(|&idx| EMOJIS[idx].glyph.as_str()),
             Some("😀")
+        );
+    }
+
+    #[test]
+    fn search_finds_unicode_17_and_18_emojis() {
+        for (query, glyph) in [("orca", "🫍"), ("pickle", "🫝")] {
+            let results = search_emojis(query);
+
+            assert_eq!(
+                results.first().map(|&idx| EMOJIS[idx].glyph.as_str()),
+                Some(glyph)
+            );
+        }
+    }
+
+    #[test]
+    fn skin_tone_applies_to_wrestlers_and_bunny_ears() {
+        assert_eq!(apply_skin_tone("🤼", SkinTone::Light), "🤼🏻");
+        assert_eq!(
+            apply_skin_tone("👯\u{200D}♀\u{FE0F}", SkinTone::Dark),
+            "👯🏿\u{200D}♀\u{FE0F}"
         );
     }
 
